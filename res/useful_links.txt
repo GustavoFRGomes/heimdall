@@ -1,2 +1,4 @@
 http://opensourceforu.efytimes.com/2011/02/capturing-packets-c-program-libpcap/
-
+http://www.cyberciti.biz/faq/how-to-find-gateway-ip-address/
+http://www.techrepublic.com/blog/european-technology/10-coolest-uses-for-the-raspberry-pi/505
+http://www.wilderssecurity.com/threads/network-gateway-on-a-raspberry-pi.330541/
