@@ -2,3 +2,11 @@ http://opensourceforu.efytimes.com/2011/02/capturing-packets-c-program-libpcap/
 http://www.cyberciti.biz/faq/how-to-find-gateway-ip-address/
 http://www.techrepublic.com/blog/european-technology/10-coolest-uses-for-the-raspberry-pi/505
 http://www.wilderssecurity.com/threads/network-gateway-on-a-raspberry-pi.330541/
+
+http://stackoverflow.com/questions/11901830/simulate-incoming-packets-on-a-network-interface-in-linux
+http://www.xml.com/ldd/chapter/book/ch14.html#t6
+https://www.kernel.org/doc/Documentation/networking/timestamping.txt
+http://www.cyberciti.biz/faq/check-network-connection-linux/
+http://man7.org/linux/man-pages/man7/packet.7.html
+http://yusufonlinux.blogspot.pt/2010/11/data-link-access-and-zero-copy.html
+http://www.cs.unh.edu/cnrg/people/gherrin/linux-net.html
