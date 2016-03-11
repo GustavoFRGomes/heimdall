@@ -4,7 +4,7 @@
  * protocols (possibly unsecure ones).
  */
 
-#include "protocol.h"
+/* #include "protocol.h" */
 
 typedef struct
 {
