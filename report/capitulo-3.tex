@@ -1,34 +1,59 @@
-\chapter{Tecnologias e Ferramentas Utilizadas}
+\chapter{Technologies and Tools Used}
 % OU \chapter{Trabalhos Relacionados}
 % OU \chapter{Engenharia de Software}
 % OU \chapter{Tecnologias e Ferramentas Utilizadas}
-\label{chap:tecno-ferra}
+\label{chap:tech}
 
-\section{Introdução}
+\section{Introduction}
 \label{chap3:sec:intro}
-Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+This project will make use of the Netfilter subsystem of the Linux kernel, this
+module will be used for the capturing of packets for further analysis. As for
+the mobile app it will be implemented for the Android operating system and it
+will make use of the Java programming language.
 
-\section{Secções Intermédias}
-\label{chap3:sec:...}
+\section{Packet Filtering System}
+\label{chap3:sec:pfs}
+The Packet Filtering System will be on the Raspberry Pi and will be responsible
+for the capturing of all incoming packets to the system. It will make use of
+the Netfilter susbsytem present in the Linux kernel, which willmake it possible
+to implement hooks that will interact with the networking card of the Raspberry
+Pi and it will enable the capture of every packet. This is one of the vital
+parts of the system because of the efficiency gained from interacting with the
+operating system's kernel directly.
 
-A tabela~\ref{tab:exemplo} serve apenas o propósito da exemplificação de como se fazem tabelas em \LaTeX.
-%
-\begin{table}
-\centering
-\begin{tabular}{|c|lr|}
-\hline
-\textbf{campo 1} & \textbf{campo 2} & \textbf{campo 3}\\
-\hline
-\hline
-14 & 15 & 16 \\
-\hline	
-13 & 13 & 13 \\
-\hline
-\end{tabular}
-\caption{Esta é uma tabela de exemplo.}
-\label{tab:exemplo}
-\end{table}
+By having access to every packet that arrives to the network card we can then
+process them and rule according to the specified config file. For the filtering
+per se we will use just plain C with arrays/lists  for the classification of
+the protocols used.
 
-\section{Conclusões}
+\section{Android Companion App}
+\label{chap3:sec:aca}
+The system will communicate securely with the a Android application, this
+process will use communications through SSL/TLS and it will communicate with
+the filtering system, which runs on the Raspberry Pi.
+
+The application itself will act as a Command\&Control and it will abstract the
+user from all the work being done within the
+
+% A tabela~\ref{tab:exemplo} serve apenas o propósito da exemplificação de como se fazem tabelas em \LaTeX.
+% \begin{table}
+% \centering
+% \begin{tabular}{|c|lr|}
+% \hline
+% \textbf{campo 1} & \textbf{campo 2} & \textbf{campo 3}\\
+% \hline
+% \hline
+% 14 & 15 & 16 \\
+% \hline
+% 13 & 13 & 13 \\
+% \hline
+% \end{tabular}
+% \caption{Esta é uma tabela de exemplo.}
+% \label{tab:exemplo}
+% \end{table}
+
+\section{Conclusions}
 \label{chap3:sec:concs}
-Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
+The use of low-level systems will help efficiency wise. This will also help by
+making the analysis process as soon as the packets arrive to the machine.
+% Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
