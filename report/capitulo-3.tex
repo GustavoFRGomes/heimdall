@@ -13,12 +13,78 @@ module will be used for the capturing of packets for further analysis. As for
 the mobile app it will be implemented for the Android operating system and it
 will make use of the Java programming language.
 
+\section{Netfilter}
+\label{chap3:sec:netfilter}
+The Linux kernel has a framework that enables the interception and capture of
+packets that are travelling through the network stack of any device that is
+running Linux. The system is called Netfilter and permits the registration of
+hooks at specific points in the network stack which allow an aplication to
+manipulate and even to delete packets from the stack. This is a very powerful
+framework that makes it possible to implement firewalls with less of a hassle.
+The \emph{iptables} firewall system present in most Linux distribution uses this
+system for its packet filtering capabilities, enabling the user of this
+application to perform actions based on the hooks
+% Talk about the fact that the hooks could be specified when filtering packets
+% in the iptables POSTROUTING, PREROUTING, etc...
+
+In the Linux kernel there is a framework capable of deploying hooks to the
+network stack in order to manipuate the packets that are received. This
+framework is used by \emph{iptables}, the firewall system that comes in all the
+Linux distributions as default, to implement the rules of a firewall.
+
+The hooks allow packets to be intercepted, while they are travelling through the
+network stack of the device and these can be accessed in the following
+instances:
+% insert all of the hooks
+\begin{enumerate}
+	\item Pre-Routing
+	\item Post-Routing
+	\item Put them all here
+\end{enumerate}
+% Describe when one of those hooks occurs, what happens or where the packet is
+% when the hooks is triggered
+
 \section{GNU/Linux}
 \label{chap3:sec:gnux}
-Gnu
+GNU/Linux is the operating system environment that the system will run, it will
+also make use of the Netfilter framework which is a component of the Linux
+kernel. This operating system enables the use of less resources in comparison to
+other Operating Systems available at the present time.
+By using this OS the resources available for the application are sufficient even
+for larger networks, another reason is the availability of low-level controls
+ready for a developer to utilize, like the framework that enables the
+implementation of the firewall capabilities of the project being developed.
+
+Of course GNU/Linux is not the only operating system available with these
+capabilities but it is the most adopted and also enables better performance then
+most of its competitors.
 
 \section{Raspberry Pi}
 \label{chap3:sec:rasp}
+The Raspberry Pi board is a small computer, in the sense that it has all of the
+components of the von Neumann architecture, it has a Central Processing Unit
+(CPU), memory and input and output slots for external devices.
+For this project there was the use of a Raspberry Pi model 2, that boasts a
+quad-core processor with a clock speed of 800MHz, one gigabyte of RAM (RANDOM
+ACCESS MEMORY) and has a networking port and a microSD card slot. With these
+features a Linux distribution is ran and it will act as a software firewall and
+a default gateway giving it access to all the networks traffic, this way it can
+fitler it according with the guidelines provided by the end-user of the system.
+
+Choosing the Raspberry Pi as the device in which to run the system was simple.
+Since this particular model and the new Raspberry Pi model 3 are available
+between the price of 30 and 40€ it is an inexpensive machine that can function
+as a gateway to outgoing traffic and anyone could buy one and install the system
+in order to protect itself.
+
+All of the system will be constrained by the lack of greater power but since the
+main purpose of this device is to filter the outgoing traffic it will be
+suficient even for bigger networks.
+
+Tests should be done on both the Raspberry Pi 2 and 3 since they differ when it
+comes to CPU performance. The main focus will be on the Raspberry Pi 2 but once
+that is done a few tests should occur to check if it would be better performant
+on the model 3.
 
 \section{Packet Filtering System}
 \label{chap3:sec:pfs}
@@ -34,6 +100,30 @@ By having access to every packet that arrives to the network card we can then
 process them and rule according to the specified config file. For the filtering
 per se we will use just plain C with arrays/lists  for the classification of
 the protocols used.
+
+\section{Android}
+\label{chap3:sec:andrd}
+Android  is an operating system developed for mobile platforms in particular for
+smartphones and later also for tablets. The underlying technology was bough by
+Google back in ......... and it has since evolved into a fully formed operating
+system capabale of also working with limited resources present in mobile deices.
+At it's heart it has a stripped down version of the Linux kernel, built to
+provide good power to hardware performance.
+% Talk about the wide use of the OS in mobile devices
+
+By developing the companion application of this project in this operating system
+two thing will be accomplished, there will be a bigger availability because of
+the world wide adoption of this particular operating system and also it will
+enable the end user to control the entire system with their mobile devices,
+e.g., most people carry around their phone even when they are home so, by
+providing a mobile application any user could access the system, and also
+receive immediate notifications if something out of the ordinary is happening
+inside their network.
+
+This companion application will only work inside the network and it will
+implement security mearsures in order to disable any connection from a possible
+attacker. The only thing that could be risked is if the device that has the
+companion application is compromised.
 
 \section{Android Companion App}
 \label{chap3:sec:aca}
