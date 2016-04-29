@@ -71,21 +71,21 @@ class DBHandler():
     def rem_user(self, query):
         self.db.users.remove(query, safe=True)
 
-    def queryDB(self, query, collection):
-        """
-            Query method that will search for the ocurrence of at least one
-            document that satisfies that query.
-            Example of a query:
-                q = { 'username': 'duarte',
-                      'password': 'q2rewr325'
-                    }
-            This will search for the username duarte AND that password. It's a
-            dictionary type query.
-        """
-        if collection is 'rules':
-            self.db.rules.find_one(query)
-        if collection is 'packets':
-            self.db.packets
+    # def queryDB(self, query, collection):
+    #     """
+    #         Query method that will search for the ocurrence of at least one
+    #         document that satisfies that query.
+    #         Example of a query:
+    #             q = { 'username': 'duarte',
+    #                   'password': 'q2rewr325'
+    #                 }
+    #         This will search for the username duarte AND that password. It's a
+    #         dictionary type query.
+    #     """
+    #     if collection is 'rules':
+    #         self.db.rules.find_one(query)
+    #     if collection is 'packets':
+    #         self.db.packets
 
     def insert_document(self, docs, collection):
         """
