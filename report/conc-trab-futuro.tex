@@ -1,14 +1,57 @@
-\chapter{Conclusões e Trabalho Futuro}
-\label{chap:conc-trab-futuro}
+\chapter{Conclusions and Future Work}
+\label{chap:conc-future-work}
 
-\section{Conclusões Principais}
-\label{sec:conc-princ}
+\section{Main Conclusions}
+\label{sec:main-concs}
 
-Esta secção contém a resposta à questão: \\
-\emph{Quais foram as conclusões princípais a que o(a) aluno(a) chegou no fim deste trabalho?}
+% Esta secção contém a resposta à questão: \\
+% \emph{Quais foram as conclusões princípais a que o(a) aluno(a) chegou no fim deste trabalho?}
 
-\section{Trabalho Futuro}
-\label{sec:trab-futuro}
+\section{Future Work}
+\label{sec:future-work}
+
+% Expansion into full firewall capabilities for incoming traffic as well
+The main desire of the system could be expanded to work as a firewall for both
+incoming and outgoing communications instead of being just for the outgoing
+traffic. This would increase security even though the domestic router also
+handles the firewall duties for incoming traffic, but this system could help
+with further security and filtering ouside from not letting any incoming traffic
+that wasn't requested by a device inside the Local Area Network.
+
+This system could also have an Intrusion Detection System for both the incoming
+and outgoing traffic but also for the inner traffic, this would prevent the
+infection of devices inside the Local Area Network minimazing the risk of worm
+spreading all across the entire domestic network. The IDS system could also
+enable to identify possible "zombie" devices inside the network by analyzing
+patterns in the traffic and notifying the user for those anomalies.
+
+One more feature that will be developed is the implementation of a firewall
+software, instead of using a third party system, with the intention of making
+the system more efficient for the Raspberry Pi which is not very powerful both
+in terms of memory and processing power. It would also be interesting to test
+the system in the newer Raspberry Pi 3 which as a better processor and compare
+the results.
+% Talk about making an IDS system for intranetwork malware detection, it could
+% be a way to stop malware from spreading to some of the connected devices, talk
+% about detection of information extraction system, implementing our own
+% firewall towards having it more optimized for the Raspberry Pi.
+
+% Coming up with ways to identify every device that is connected, and blocking
+% access to a particular host on the Internet as well as any communications
+% coming from IoT devices for some reason, having DNS lookup before.
+Another feature that is pretended to be implemented in the future is a system
+for the detection of devices to aid in the detection and identification of
+possible unkown devices that are connected to the domestic network. It could
+also help identify all the IoT devices in the network to compose individual
+reports on those same devices.
+
+% The email notifications could be done using an outside server ran by me and
+% the connection could be made from the Raspberry Pi into the server for email
+% notifications on the fly.
+Lastly the email notification system could be done using an outside service, one
+which could be accessed in order to send the emails to the user from an
+authentic email server without needing to provide credentials for a known STMP
+server as it is done currently.
 
 Esta secção responde a questões como:\\
 \emph{O que é que ficou por fazer, e porque?}\\

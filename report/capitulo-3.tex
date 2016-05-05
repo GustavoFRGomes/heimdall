@@ -1,170 +1,48 @@
-\chapter{Technologies and Tools Used}
-% OU \chapter{Trabalhos Relacionados}
-% OU \chapter{Engenharia de Software}
-% OU \chapter{Tecnologias e Ferramentas Utilizadas}
-\label{chap:tech}
-
-% we could argue here the case for linux android and the raspberry pi
+\chapter{System Architecture}
+% Os titulos dados aos capítulos são meros exemplos. Cada relatório deve adequar-se ao projeto desenvolvido.
+\label{chap:sys-arch}
 
 \section{Introduction}
 \label{chap3:sec:intro}
-This project will make use of the Netfilter subsystem of the Linux kernel, this
-module will be used for the capturing of packets for further analysis. As for
-the mobile app it will be implemented for the Android operating system and it
-will make use of the Java programming language.
+Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
 
-\section{Netfilter}
-\label{chap3:sec:netfilter}
-The Linux kernel has a framework that enables the interception and capture of
-packets that are travelling through the network stack of any device that is
-running Linux. The system is called Netfilter and permits the registration of
-hooks at specific points in the network stack which allow an aplication to
-manipulate and even to delete packets from the stack. This is a very powerful
-framework that makes it possible to implement firewalls with less of a hassle.
-The \emph{iptables} firewall system present in most Linux distribution uses this
-system for its packet filtering capabilities, enabling the user of this
-application to perform actions based on the hooks
-% Talk about the fact that the hooks could be specified when filtering packets
-% in the iptables POSTROUTING, PREROUTING, etc...
+\section{Brief Requirement Analysis}
+\label{chap3:sec:reqs}
 
-In the Linux kernel there is a framework capable of deploying hooks to the
-network stack in order to manipuate the packets that are received. This
-framework is used by \emph{iptables}, the firewall system that comes in all the
-Linux distributions as default, to implement the rules of a firewall.
+O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
+\begin{lstlisting}[caption=Trecho de código usado no projeto.]
+#include <stdio.h>
 
-The hooks allow packets to be intercepted, while they are travelling through the
-network stack of the device and these can be accessed in the following
-instances:
-% insert all of the hooks
-\begin{enumerate}
-	\item Pre-Routing
-	\item Post-Routing
-	\item Put them all here
-\end{enumerate}
-% Describe when one of those hooks occurs, what happens or where the packet is
-% when the hooks is triggered
+int main(){
+  int i = 0;
+  for(i = 0; i < 100; i++)
+    printf("%d\n",i);
+}
+\end{lstlisting}
 
-\section{GNU/Linux}
-\label{chap3:sec:gnux}
-GNU/Linux is the operating system environment that the system will run, it will
-also make use of the Netfilter framework which is a component of the Linux
-kernel. This operating system enables the use of less resources in comparison to
-other Operating Systems available at the present time.
-By using this OS the resources available for the application are sufficient even
-for larger networks, another reason is the availability of low-level controls
-ready for a developer to utilize, like the framework that enables the
-implementation of the firewall capabilities of the project being developed.
 
-Of course GNU/Linux is not the only operating system available with these
-capabilities but it is the most adopted and also enables better performance then
-most of its competitors.
+Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
+$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
 
-\section{Raspberry Pi}
-\label{chap3:sec:rasp}
-The Raspberry Pi board is a small computer, in the sense that it has all of the
-components of the von Neumann architecture, it has a Central Processing Unit
-(CPU), memory and input and output slots for external devices.
-For this project there was the use of a Raspberry Pi model 2, that boasts a
-quad-core processor with a clock speed of 800MHz, one gigabyte of RAM (RANDOM
-ACCESS MEMORY) and has a networking port and a microSD card slot. With these
-features a Linux distribution is ran and it will act as a software firewall and
-a default gateway giving it access to all the networks traffic, this way it can
-fitler it according with the guidelines provided by the end-user of the system.
+Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
+\begin{equation}
+ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
+ \label{eq:eq1}
+\end{equation}
 
-Choosing the Raspberry Pi as the device in which to run the system was simple.
-Since this particular model and the new Raspberry Pi model 3 are available
-between the price of 30 and 40€ it is an inexpensive machine that can function
-as a gateway to outgoing traffic and anyone could buy one and install the system
-in order to protect itself.
+\begin{align}
+ 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
+                         = & x^4 -2.
+ \label{eq:eq2}
+\end{align}
 
-All of the system will be constrained by the lack of greater power but since the
-main purpose of this device is to filter the outgoing traffic it will be
-suficient even for bigger networks.
+\section{Architecture}
+\label{chap3:sec:arch}
+% Diagrama de Componentes
 
-Tests should be done on both the Raspberry Pi 2 and 3 since they differ when it
-comes to CPU performance. The main focus will be on the Raspberry Pi 2 but once
-that is done a few tests should occur to check if it would be better performant
-on the model 3.
-
-\section{Packet Filtering System}
-\label{chap3:sec:pfs}
-The Packet Filtering System will be on the Raspberry Pi and will be responsible
-for the capturing of all incoming packets to the system. It will make use of
-the Netfilter susbsytem present in the Linux kernel, which willmake it possible
-to implement hooks that will interact with the networking card of the Raspberry
-Pi and it will enable the capture of every packet. This is one of the vital
-parts of the system because of the efficiency gained from interacting with the
-operating system's kernel directly.
-
-By having access to every packet that arrives to the network card we can then
-process them and rule according to the specified config file. For the filtering
-per se we will use just plain C with arrays/lists  for the classification of
-the protocols used.
-
-\section{Android}
-\label{chap3:sec:andrd}
-Android  is an operating system developed for mobile platforms in particular for
-smartphones and later also for tablets. The underlying technology was bough by
-Google back in ......... and it has since evolved into a fully formed operating
-system capabale of also working with limited resources present in mobile deices.
-At it's heart it has a stripped down version of the Linux kernel, built to
-provide good power to hardware performance.
-% Talk about the wide use of the OS in mobile devices
-
-By developing the companion application of this project in this operating system
-two thing will be accomplished, there will be a bigger availability because of
-the world wide adoption of this particular operating system and also it will
-enable the end user to control the entire system with their mobile devices,
-e.g., most people carry around their phone even when they are home so, by
-providing a mobile application any user could access the system, and also
-receive immediate notifications if something out of the ordinary is happening
-inside their network.
-
-This companion application will only work inside the network and it will
-implement security mearsures in order to disable any connection from a possible
-attacker. The only thing that could be risked is if the device that has the
-companion application is compromised.
-
-\section{Android Companion App}
-\label{chap3:sec:aca}
-The system will communicate securely with the a Android application, this
-process will use communications through SSL/TLS and it will communicate with
-the filtering system, which runs on the Raspberry Pi.
-
-The application itself will act as a Command\&Control and it will abstract the
-user from all the work being done within the Packet Filtering System.
-
-This companion application will connect to the server-side and enable the
-network administrator to categorize any protocol as unsafe and to choose which
-action it should perform once a connection from a device is made to the
-Internet. The user could also monitor the traffic and access some metrics from
-the activity of the Local Area Network devices. These metrics could be simple
-percentages of unsafe connections or even refering to a specific protocol. It
-could also log how many hours and the amount of traffic to a specific host, it
-could also list all of the hosts visited from the devices inside the domestic
-network.
-
-% A tabela~\ref{tab:exemplo} serve apenas o propósito da exemplificação de como se fazem tabelas em \LaTeX.
-% \begin{table}
-% \centering
-% \begin{tabular}{|c|lr|}
-% \hline
-% \textbf{campo 1} & \textbf{campo 2} & \textbf{campo 3}\\
-% \hline
-% \hline
-% 14 & 15 & 16 \\
-% \hline
-% 13 & 13 & 13 \\
-% \hline
-% \end{tabular}
-% \caption{Esta é uma tabela de exemplo.}
-% \label{tab:exemplo}
-% \end{table}
+\section{Tools}
+\label{chap3:sec:tools}
 
 \section{Conclusions}
 \label{chap3:sec:concs}
-The focus of this chaper was on what technologies and components involved in
-this project.
-The use of low-level systems will help efficiency wise. This will also help by
-making the analysis process as soon as the packets arrive to the machine.
-% Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
+Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.

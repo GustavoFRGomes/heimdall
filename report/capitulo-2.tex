@@ -1,115 +1,47 @@
-\chapter{State of the Art}
-% OU \chapter{Trabalhos Relacionados}
-% OU \chapter{Engenharia de Software}
-% OU \chapter{Tecnologias e Ferramentas Utilizadas}
-\label{chap:state-of-art}
+\chapter{Related Works and Technology}
+% Os titulos dados aos capítulos são meros exemplos. Cada relatório deve adequar-se ao projeto desenvolvido.
+\label{chap:related-material}
 
 \section{Introduction}
 \label{chap2:sec:intro}
-Nowadays there has been a number of cases that work reveal the insecurity of
-most devices on the Internet of Things %unfinished.
-% put some references here maybe!!
-but how do regular people protect themselves from the perils their devices
-might bring to their household? There isn't a solution to protect their own
-network from anyone who could leverage their "smart" appliances to get inside
-it and perform malicious actions, like traffic monitoring, sensitive
-information extraction or even make your devices part of a botnet.
+Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
 
-The focus of this project is on the traffic that willbe sent from devices onto
-the Internet, the outgoing traffic because it represents a point of failure.
-If the outgoing traffic isn't secure then anyone could study our daily life,
-form the information sent from any "smart" appliances an attacker could study
-a potential victim and spy on their lives. At this present time there are a
-number of cameras that are connected to the Intenret, thus being part of the
-Internet of Things, that are reachable by anyone on the Internet and that
-could be viewed by anyone who as a minimum skill level for michieves.
+\section{Similar Solutions}
+\label{chap2:sec:similar-sol}
 
-\section{Wireshark}
-\label{chap2:sec:wire}
-% Describe the monitoring of the Internet traffic monitoring
-Wireshark is a network monitoring tool that captures network packets from the
-Local Area Network. This tool is mostly used by
-\section{Nagios}
-\label{chap2:sec:nag}
-% Described Nagios which is similar to what we are trying to accomplish
+O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
+\begin{lstlisting}[caption=Trecho de código usado no projeto.]
+#include <stdio.h>
 
-One similar product to the one we are developing is Nagios, this is a network
-infrastruture monitoring system designed to map an
+int main(){
+  int i = 0;
+  for(i = 0; i < 100; i++)
+    printf("%d\n",i);
+}
+\end{lstlisting}
 
-Nagios is a infrastructure monitoring tool, developed mostly for commercial and
-industrial uses. This is a tool that can add connected devices and monitor them
-and all of the traffic they generate. Nagios has a version especially made for
-the Raspberry Pi, called the NagiosPi, that consists of 5 different interfaces
-the user could interact with.
-% make a list here with the following
-Nagios;
-Nconf;
-NagVis;
-PHPMyAdmin;
-RaspControl.
 
-The NagiosPi system enables the monitoring of all traffic coming in and out of
-the devices, logging it if intructed. It could monitor specific ports from
-specific machines. It also has a visualization functionality which lets its
-users visualize all the devices that are connected.
+Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
+$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
 
-\section{Privacy Concerns}
-\label{chap2:sec:priv}
-% put some of the images from the first presentation of the IP cams.
-There has been some worries about the privacy that some of the devices
-connected to the Internet might have, e.g. IP cams. These devices are very
-limited in terms of computatioinal resources so they don't implement some basic
-security features and as a result anyone could access some of those devices
-inside the domestic network from around the world.
-There are search engines for devices connected to the Internet which can
-identify some devices connected to the Internet and that are unsecure to a
-point where anyone could access the information hoozing out to the Internet.
+Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
+\begin{equation}
+ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
+ \label{eq:eq1}
+\end{equation}
 
-With these search engines anyone could find for example a remote surveillance
-camera, or IP cam, which is reachable from the Internet and which could be used
-to spy on people's lives. Privacy is a concept which has been talked about in
-today's world and these cameras and systems are simply making any footage
-accessible by anyone online, mostly this is not done by the manufacturers as a
-way to let anyone spy on us but rather a negligence based on the lack of power
-and resources those machines have, which make it harder if not impossible to
-secure them with the computational resources at hand so they don't shield the
-users privacy over functionality.
+\begin{align}
+ 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
+                         = & x^4 -2.
+ \label{eq:eq2}
+\end{align}
 
-\section{The Internet of Things}
-\label{chap2:sec:iot}
-% talk a lot about the Internet Of Things
-The Internet of Things is becoming a hugely adopted term to describe all of the
-devices that are connected to the Internet, being smartphones, tablets, smart
-fridges, coffee markers and most appliances that are now able to connect to the
-Internet and communicate with other devices or even with people.
+\section{Raspberry Pi}
+\label{chap2:sec:rasp}
 
-A humongous connected world is becoming more and more a reality instead of a
-profecy/fantasy. Since the opening of the Internet to the general public we
-have seen a exponential increase in the number of devices connected at any
-given time. No one can argue that the Internet is not the biggest social
-experiment ever accomplished, it unites and dissiminates knowledge among it's
-users.
-
-Companies see the value of selling connected devices and they show futuristic
-predictions of how the world could look like if more and more devices were to
-be connected to the Internet, they sell us the idea that our fridge might know
-that we are out of milk and order some online without we even noticing, they
-sell us on the idea that our lives would be easier if our devices could be
-connected to the Internet and automate some household maintenance for us. But
-they won't tell us about the threats that we could have if even one of those
-devices is remotely compromised.
-
-Most people are not aware or even technically skilled to know if and when their
-Internet connected devices are using unsecure protocols for communications. The
-networking knowledge and tools that are needed to identify which devices and
-which protocols are being used on every device.
+\section{Android}
+\label{chap2:sec:android}
 
 \section{Conclusions}
 \label{chap2:sec:concs}
-This chapter provides context to the problem at hand, by describing the world
-that we live in right now and also the neglect that some companies are
-manufacturing unsecure devices and consumers are unware of this when they are
-buying their smart appliances.
-
-This chapter also makes a brief description of what is the Internet of Things
-and what are the devices that can be included in this network.
+Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
