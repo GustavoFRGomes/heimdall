@@ -4,44 +4,146 @@
 
 \section{Introduction}
 \label{chap2:sec:intro}
-Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+% Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+In this chapter there will be presented some related works, with some similar
+functionalities as the project at hand. There will also be a section dedicated
+to the description of the underlying techonolgy that is going to be used in the
+development of this project.
 
 \section{Similar Solutions}
 \label{chap2:sec:similar-sol}
+There are similar projects but not with the same set of functionalities as the
+project at hand. The similar solutions are as follows:
+\begin{enumerate}
+	\item Nagios
+	\item Domestic Routers
+	\item Wireshark
+	\item Snort
+\end{enumerate}
 
-O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
-\begin{lstlisting}[caption=Trecho de código usado no projeto.]
-#include <stdio.h>
+Now we begin the description of the products listed above and also pointing out
+the main differences between these solutions and the project described
+throughout this report.
 
-int main(){
-  int i = 0;
-  for(i = 0; i < 100; i++)
-    printf("%d\n",i);
-}
-\end{lstlisting}
+\subsection{Nagios}
+\label{chap2:sec:similar-sol:sub:nagios}
+One very similar project is the Nagios software, and it consists of a network
+infrastructure monitoring system. Developed mostly for comercial and industrial
+environments. There is a special version made for the Raspberry Pi, called
+NagiosPi, that enables the user to check all of the connected devices and
+monitor their traffic they generate. The NagiosPi system has the following
+interfaces:
+\begin{enumerate}
+	\item Nagios;
+	\item Nconf;
+	\item NagVis;
+	\item PHPMyAdmin;
+	\item RaspControl;
+\end{enumerate}
+
+The NagiosPi system permits that the netwrok administrator logs all of the
+information it might find pertinent as well as monitor all of the traffic
+circulating inside the network. Using these interfaces the users can monitor
+specific ports and hosts, it could visualize the packets and some statistics.
+
+One of the biggest differences to the project being described in this report is
+that it is more focused towards the domestic environments, because Nagios has a
+complex interface using the web browser and not the mobile application offered
+by this project. One more difference is that Nagios exclusively handles
+monitoring, but the system being developed also has firewall capabilities, which
+means it could block and also notification capabilities for flagged protocols
+and packets.
+
+\subsection{Domestic Routers}
+\label{chap2:sec:similar-sol:sub:routers}
+Another similar solution that could be referenced is the domestic router which
+people have in their homes. This router actually comes with a firewall already
+minimally configured preventing that any connection which isn't started by a
+device inside the domestic network is unable to access or even probe the devices
+which are inside the domestic network.
+
+As said before this is a simple firewall but make a lot of difference because it
+prevents malicious attackers from getting information about the network itself
+and any of the devices connected to it, as well as prevents the exploitation of
+these devices becasue they need that device to access a resource on the Internet
+in order to become infected. This might sound useless but the reason wy people
+get infected by a computer virus is because they access a website or resource on
+the Internet which spreads malware, so it is clear that the user inside the
+domestic network needs to access the infectious resource or download it in order
+to get infected by it, in other words, it needs to bring the infection to
+himself and not be always vulnerable.
+
+The main difference between the firewall system of domestic routers and the
+system described in this project is that the domestic router filters incoming
+traffic, packets and connections coming from the Internet to the domestic
+network. In the case of this system the filtering is done on the outgoins
+packets, so they complement each other, preventing the user from getting malware
+and also making it possible to prevent any communication between the virus and
+any other resource on the Internet.
+Another difference is that our system can be easily configurable using the
+mobile application as well as notify the user of flagged behaviors or
+communications, which the home router can't do.
+% O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
+% \begin{lstlisting}[caption=Trecho de código usado no projeto.]
+% #include <stdio.h>
+
+% int main(){
+%   int i = 0;
+%   for(i = 0; i < 100; i++)
+%     printf("%d\n",i);
+% }
+% \end{lstlisting}
 
 
-Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
-$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
+% Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
+% $$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
 
-Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
-\begin{equation}
- y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
- \label{eq:eq1}
-\end{equation}
+% Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
+% \begin{equation}
+%  y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
+%  \label{eq:eq1}
+% \end{equation}
 
-\begin{align}
- 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
-                         = & x^4 -2.
- \label{eq:eq2}
-\end{align}
+% \begin{align}
+%  2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
+%                          = & x^4 -2.
+%  \label{eq:eq2}
+% \end{align}
 
 \section{Raspberry Pi}
 \label{chap2:sec:rasp}
+The Raspberry Pi is a small computer that comprises all of the vital component
+that make it a computer, with a CPU, memory and input and output capabilities.
+This tiny computer was choosen due to its affordable price, less then 45€. For
+that price the resources available are not extremly performant but for the
+development of this gateway it is enough due to the low-level nature of the data
+being accessed.
+
+This micro-computer will have installed the Operating System and also the
+project itself which comprises a web service, a database, a firewall and a
+notification scrip for emails.
+
+%talk about the specs of the Raspberry Pi 2?
 
 \section{Android}
 \label{chap2:sec:android}
+For the interaction between the user and system running on the Raspberry Pi an
+Android application will be used. The Android OS is one of the major mobile
+operating systems used and it is mostly due to the fact that it can run on
+devices with low computational resources so it is the perfect platform for the
+development of the companion app for this system.
+
+This mobile operating system operates using applications written in Java which
+is also one of the most popular programming languages in the world, the Android
+OS is also equipped with a vast set of tools and libraries that can be leveraged
+to create a web service consumer which makes it a perfect fit for the purposes
+of this project.
 
 \section{Conclusions}
 \label{chap2:sec:concs}
-Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
+This chapter talked about some of the similar products and also the main
+differentiating characteristics between these solutions and our project, like
+the Nagios monitoring system, or the firewall of domestic routers.
+In this chapter there was also a description of the main technologies being
+leveraged in this project, the Raspberry Pi inexpensive computer and also the
+Android mobile operating system.

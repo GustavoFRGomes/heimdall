@@ -8,36 +8,22 @@ Cada capítulo \underline{intermédio} deve começar com uma breve introdução 
 
 \section{Web Service Subsystem}
 \label{chap4:sec:web-sys}
+The Web Service was done using the Flask micro-framework implemented in Python.
+As already said in the previous chapter this framework allows for the use of
+third-party extensions as the ones used to develop the web service API. These
+extensions are:
+\begin{enumerate}
+	\item Flask-RESTful
+	\item Flask-SQLAlchemy
+\end{enumerate}
 
-O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
-\begin{lstlisting}[caption=Trecho de código usado no projeto.]
-#include <stdio.h>
-
-int main(){
-  int i = 0;
-  for(i = 0; i < 100; i++)
-    printf("%d\n",i);
-}
-\end{lstlisting}
-
-
-Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
-$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
-
-Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
-\begin{equation}
- y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
- \label{eq:eq1}
-\end{equation}
-
-\begin{align}
- 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
-                         = & x^4 -2.
- \label{eq:eq2}
-\end{align}
+% \begin{lstlisting}[caption=Trecho de código usado no projeto.]
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
+The database is the centerpiece of the entire system. It uses the SQLite
+database management system and it is mostly interacted with using a Python
+module named SLQAlchemy.
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
