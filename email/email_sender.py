@@ -10,7 +10,8 @@ email_servers = {
                  'comcast': 'smtp.comcast.net'
                 }
 
-def send_email(username, password, provider='gmail', template='email.json'):
+def send_email(username, password, provider='gmail', template='email.json', \
+        reason = ''):
     port = 587 # to use the TLS conection
     if provider in ['at&t', 'verizon']:
         port = 465
@@ -20,12 +21,12 @@ def send_email(username, password, provider='gmail', template='email.json'):
     smtpObj.starttls()
     smtpObj.login(username, password)
 
-    receiver, message = parseJson(template)
+    receiver, message = parseJson(template, reason)
 
     smtpObj.sendmail(username, receiver, message)
     smtpObj.quit()
 
-def parseJson(template):
+def parseJson(template, reason):
     text = open(template)
     temp = json.loads(text.read())['email']
 
@@ -33,7 +34,10 @@ def parseJson(template):
     subject = 'Subject: ' + temp['subject'] + '\n'
     message = temp['greeting'] + ' '
     message += temp['users_name'] + ',\n\n'
-    message += temp['reason'] + '\n\n'
+    if reason == '':
+        message += temp['reason'] + '\n\n'
+    else:
+        message += reason + '\n\n'
     message += temp['goodbye'] + '\n'
     message += temp['sign']
 
