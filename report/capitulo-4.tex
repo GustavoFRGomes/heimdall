@@ -4,10 +4,17 @@
 
 \section{Introduction}
 \label{chap4:sec:intro}
-Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+% Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+This chapter will describe the four subsystem that were developed and that
+compose the entire project. As said previously the entire system consists of
+four subsystems that interact with one another using the database, the intention
+is to make the system behave asynchronously and this will help in the
+development or upgrade of any of the components since they are not linked they
+can be exchanged for others which could have better performance or efficiency.
 
 \section{Web Service Subsystem}
 \label{chap4:sec:web-sys}
+% divide it in Flask subsection and Android App subsection
 The Web Service was done using the Flask micro-framework implemented in Python.
 As already said in the previous chapter this framework allows for the use of
 third-party extensions as the ones used to develop the web service API. These
@@ -17,20 +24,105 @@ extensions are:
 	\item Flask-SQLAlchemy
 \end{enumerate}
 
+This system also can be divided into the Web Server and the Android Companion
+application. These are made using a different technology stack, Python's Flask
+and the Android Application, and because of this the communication between these
+two systems need to deploy the same communication protocol and architecture.
+This is accomplished by using the REST architecture. This is the
+
 % \begin{lstlisting}[caption=Trecho de código usado no projeto.]
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
 The database is the centerpiece of the entire system. It uses the SQLite
 database management system and it is mostly interacted with using a Python
-module named SLQAlchemy.
+module named SQLAlchemy.
+
+Using the \emph{SQLAlchemy} module we could declare classes that will represent
+our tables and their attributes within the database on a Python script. This
+way there is also an abstraction for the SQL queries, where the developer can
+call methods to add, delete, update and filter through the data that is within
+the database. This is accomplished, as said previously, by declaring classes to
+represent the models of the data, and declaring the data types for each
+attribute and some properties that they might have, e.g. declaring an attribute
+as unique within a table.
+
+% insert and explain at least one of the models
+
+After modelling the data we only need to create a session for the database, and
+all of the data inside the database will be accessible with the call of methods
+from the session instance. These methods could be insert, delete, update and
+query.
+
+% insert and explian at least one query and one insertion
+
+% The database is the central component of our system and it is the most
+% important system, because without it nothing else can run.
+
+The database is organized with the following schema:
+
+%insert an image of the database's schema here
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
 
 \section{Firewall Handler Subsystem}
 \label{chap4:sec:firewall-sys}
+The Firewall Subsytem consists of the firewall itself, which will be
+accomplished using the \emph{iptables} system, present in most Linux
+distributions as the default firewall system, and there is also a firewall
+handling system that is responsible for acquiring the rules, defined by the
+user, from the database and deploying them on the firewall system.
+
+\subsection{iptables}
+\label{chap4:sec:firewall-sys:sub:iptables}
+The iptables is an application program that allows for the configuration of the
+Linux kernel firewall, which uses the Netfilter framework. This application,
+provided in most Linux distributions, is an interface that enables users to
+set up, maintain and inspect the tables of IP packet filtering rules within the
+Linux kernel.
+
+It is a widely used and very flexible system used by system administrators that
+need to enforce certain security policies on a single system or network. There
+are two versions of this software, one for IPv4 and another one for IPv6, the
+latter being named iptables6.
+
+\subsection{python-iptables}
+\label{chap4:sec:firewall-sys:sub:iptc}
+The \emph{python-iptables} is a package that makes the interface between
+iptables and Python scripts. By using this package we could create the firewall
+handling class that will interact with the Linux kernel firewall and employ the
+rules using the Python language.
+This Python package makes the process of deploying rules to the firewall easier
+as well as the addition of new rule chains for the filtering within the tables.
+
+The Firewall class does just that, querying all of the rules inside the
+database, looking for optional source and destination IP addresses for any given
+rule and implementing the pretended actions.
+The main cycle of the class is the \emph{run()} method that will perform the
+following task within an infinite loop:
+
+\begin{enumerate}
+	\item Get a list of rules from the DB;
+	\item Flush the rules within the iptables ruleset;
+	\item Insert the new rules;
+	\item Wait for the refresh time to pass and start again.
+\end{enumerate}
+
+Some optimizations are also present, for example there is a match made by the
+system in order to check if the ruleset from the DB is the same of the previous
+iteration, or disabling the autocommit for each rule in order to deploy the
+entire ruleset right after flushing instead of flushing the entire ruleset and
+adding a rule at a time.
+
+% Add the Firewall().run() method here!
 
 \section{Conclusions}
 \label{chap4:sec:concs}
-Cada capítulo \underline{intermédio} deve referir o que demais importante se conclui desta parte do trabalho, de modo a fornecer a motivação para o capítulo ou passos seguintes.
+This chapter described all of the subsystems that comprise the project. We
+talked about the Web Service with the Flask server and also the Android app that
+consumes it. We also described the Database system which is the central
+component and all systems depend on it. We referred the Email Notification and
+the details that need to be in place to make email notifications possible. At
+last we described how the Firewall subsystem and how we accomplished the sense
+of dynamic firewall configuring.
