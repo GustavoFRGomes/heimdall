@@ -1,5 +1,5 @@
-<<<<<<< HEAD
 # Heimdall
+Secure Gateway for Domestic Networks
 
 Secure gateway software for outgoing connections. This project will filter all
 outgoing traffic and notify the user of unsecure protocol usage.
@@ -22,7 +22,3 @@ The firectory organization is as follows:
 	- firewall -- holds the source code for the firewall system
 	- companion -- is the companion app implementation of the entire system
 	- web_service -- consists of the implementation of teh web service API
-=======
-# heimdall
-Secure Gateway Software for Domestic Networks
->>>>>>> 3177f7174c36ac56e2010175c4612d49360962ed

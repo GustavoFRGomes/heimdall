@@ -1,43 +1,64 @@
 \chapter{Prototype and Testing}
-% Os titulos dados aos capítulos são meros exemplos. Cada relatório deve adequar-se ao projeto desenvolvido.
 \label{chap:proto-test}
 
 \section{Introduction}
 \label{chap4:sec:intro}
 Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+This chapter will describe the Prototype developed for this project as well as
+the Environment in which the system was tested. It will also talk about the
+process of installation, usage. Only a protoype of the system was made, even
+though it is a complete system there are some feature that could make the system
+more appealing to every user.
 
 \section{Prototype Description and Environment}
 \label{chap4:sec:desc-env}
+The system can be deployed using the initializing script, which will kick off
+all systems involve. Since we have multiple systems there is the need to start
+every system seperately. This will be done by running the \emph{heimdall.py}
+script.
 
-O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
-\begin{lstlisting}[caption=Trecho de código usado no projeto.]
-#include <stdio.h>
-
-int main(){
-  int i = 0;
-  for(i = 0; i < 100; i++)
-    printf("%d\n",i);
-}
-\end{lstlisting}
-
-
-Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
-$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
-
-Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
-\begin{equation}
- y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
- \label{eq:eq1}
-\end{equation}
-
-\begin{align}
- 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
-                         = & x^4 -2.
- \label{eq:eq2}
-\end{align}
 
 \section{Installation and Usage}
 \label{chap4:sec:inst-usg}
+In this section we are going to talk about the dowload and installation of the
+deoendencies that the system requires as well as the configuration that needs to
+be done by the user to make the system run as it is supposed to do.
+
+This section is divided in the following subsections:
+\begin{enumerate}
+	\item Raspberry Pi Preparation
+	\item Server-Side Dependencies
+	\item Android Application
+\end{enumerate}
+
+\subsection{Raspberry Pi Preparation}
+\label{chap5:sec:inst-usg:sub:rasp-prep}
+For the Raspberry Pi to behave as the inteded gateway for the network it needs
+to at least be the machine that attributes the local IP addresses and declare
+itself as the domestic network gateway. For this the Raspberry Pi needs to run
+the \emph{dhcp} server.
+
+Another vital part of the system is the presence of the Python interpreter,
+especially the version 3.4.x. This is needed in order to run the system itself,
+excluding the Android application. Another resource that is encoraged to have is
+the \emph{pip} application which is a package manager for Python packages, the
+required packages are described in the next subsection.
+
+\subsection{Server-Side Dependencies}
+\label{chap5:sec:inst-usg:sub:rasp-prep}
+There are a few dependencies that should be downloaded and installed in order to
+run all of the components of the system.
+
+\begin{enumerate}
+	\item sqlalchemy
+	\item flask
+	\item flask-restful
+	\item flask-sqlalchemy
+	\item python-iptables
+\end{enumerate}
+
+In order to download and install these Python dependencies the user could use
+\emph{pip} and issue the following comman
 
 \section{Testing}
 \label{chap4:sec:testing}
