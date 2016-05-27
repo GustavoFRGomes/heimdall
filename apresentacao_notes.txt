@@ -10,3 +10,36 @@ Conclusions and Future Work
 
 Flask with SSL and HTTPS
 http://flask.pocoo.org/snippets/111/
+
+Android
+http://stackoverflow.com/questions/3761737/https-get-ssl-with-android-and-self-signed-server-certificate
+
+
+ABSTRACT
+
+Nowadays the Internet of Things is a reccuring mostly becasue it is invading our
+lives at a fast pace, we now know are used to hearing about the latest "smart
+appliance", like "smart lightbulbs", "smart fridges", "ip-cameras" and many
+more. But as Internet enabled applciances start to invade our homes there is
+also a lack of security on these systems. This is all becasue these smart
+appliances have limited resources so, security cocerns by the developers are
+actually pushed to second plan. this leaves a hole in the security of anyone's
+home network, because they can communicate via unsecure protocols and become an
+easy target for attackers. These vulnerabilities can be mostly halted by
+making a system which will shield the user by filtering the traffic that will be
+sent ot the Internet. This project aims to do just that, allow the user to build
+a secure and dynamic firewall system that will give the usr the power to block
+communications coming from within their domestic network,
+
+v2
+The fast growing adoption of devices which are Internet enabled is becoming a
+big security concern. Mostly these devices that compose the majority of the
+Internet of Things are very limited in terms of computational resources which
+prevents many of them from having any security concerns at all, some use
+unsecure protocols which enable anyone to interact with them through the
+Internet, others become gateways for malware to come inside your domestic
+network. This project aims to build a secure gateway that will help filter the
+traffic that is sent from the local network towards the Internet, by using a
+Raspberry Pi the cost of this device are kept to a minimum and the user can
+configure the gateway in order to not allow some of the devices from exposing
+information to anyone on the Internet.
