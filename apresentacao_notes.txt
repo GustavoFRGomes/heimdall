@@ -7,3 +7,6 @@ Related Works
 System Architecture
 Prototyping and Testing
 Conclusions and Future Work
+
+Flask with SSL and HTTPS
+http://flask.pocoo.org/snippets/111/

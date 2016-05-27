@@ -60,9 +60,9 @@ class Firewall():
             mac_match = rule.create_match('mac')
             mac_match.mac_source = db_rule.mac.mac
         if db_rule.action in ['ACCEPT', 'NOTIFY']:
-            rule.target = iptc.Target(rule, db_rule.action)
+            rule.target = iptc.Target(rule, 'ACCEPT')
         if db_rule.action in ['BLOCK', 'BLOCK_NOTIFY']:
-            rule.target = iptc.Target(rule, db_rule.action)
+            rule.target = iptc.Target(rule, 'DROP')
 
         return rule
 
@@ -72,14 +72,10 @@ class Firewall():
         rule.protocol = protocol
         match = rule.create_match(protocol)
         match.dport = str(rule_dic['port'])
-        if rule_dic['action'] in ['DROP', 'ACCEPT']:
-            rule.target = iptc.Target(rule, rule_dic['action'])
-        # check for action DROP_NOTIFY
-        if rule_dic['action'] == 'NOTIFY':
-            # do only log action
+        if db_rule.action in ['ACCEPT', 'NOTIFY']:
             rule.target = iptc.Target(rule, 'ACCEPT')
-        if rule_dic['action'] == 'BLOCK_NOTIFY':
-            rule.target = iptc.Target(rule, 'BLOCK')
+        if db_rule.action in ['BLOCK', 'BLOCK_NOTIFY']:
+            rule.target = iptc.Target(rule, 'DROP')
 
         # self.chain.insert_rule(rule)
         return rule
@@ -87,11 +83,11 @@ class Firewall():
     def counterDB(self, results):
         # add the id of the rule and the packets and bytes from the tuple
         # respectively!
-        print(results)
         rules = self.getFromDB()
-        print(rules)
-        for rule, pair in zip(rules, results):
-            counter = Counter(rule_id=rule.id, timestamp=getTime(), \
+        # check for mismatch between counters and rules.
+        for index in range(len(rules)):
+            pair = results[index]
+            counter = Counter(rule_id=rules[index].id, timestamp=getTime(), \
                     packets=pair[0], byte=pair[1])
             self.session.add(counter)
 
