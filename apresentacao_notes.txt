@@ -1,0 +1,9 @@
+title: Protecting a SOHO Using a Raspberry Pi
+authors: Gustavo Gomes, Musa Samaila, Pedro R. M. Inacio, Mario M. Freire
+
+Abstract
+Introduction
+Related Works
+System Architecture
+Prototyping and Testing
+Conclusions and Future Work
