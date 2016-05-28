@@ -28,6 +28,10 @@ rule_fields = {
     'action': fields.String,
 }
 
+list_fields = {
+    'rules': fields.List,
+}
+
 session = create_session()
 
 #parser = reqparse.RequestParser()
@@ -123,11 +127,12 @@ class RuleResource(Resource):
         return rule, 201
 
 class RuleListResource(Resource):
-    @marshal_with(rule_fields)
+    @marshal_with(list_fields)
     def get(self):
         return session.query(Rule).all()
 
-
+# Make available only the 10 newest notifications or something.
+# Pass the date/timestamp for the query of the data
 class PacketListResource(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
