@@ -1,4 +1,4 @@
-from models import Rule, User, Packet
+from models import Rule, User, Packet, IP, MAC
 from models import create_db, create_session
 
 from flask.ext.restful import reqparse
@@ -113,7 +113,6 @@ class RuleResource(Resource):
         session.commit()
     # delete
     # post
-    @marshal_with(rule_fields)
     def post(self):
         parsed_args = self.reqparse.parse_args()
         rule = Rule( port=parsed_args['port'], action=parsed_args['action'], \
@@ -123,10 +122,39 @@ class RuleResource(Resource):
         return rule, 201
 
 class RuleListResource(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        #self.reqparse.add_argument('id')
+        self.reqparse.add_argument('port')
+        self.reqparse.add_argument('protocol')
+        self.reqparse.add_argument('action')
+        self.reqparse.add_argument('ip')
+        self.reqparse.add_argument('mac')
+        super(RuleListResource, self).__init__()
+
     @marshal_with(rule_fields)
     def get(self):
         return session.query(Rule).all()
 
+    def post(self):
+        """
+        POST handler to add a new rule to the ruleset.
+        :return: empty list with 200 success code tuple.
+        """
+        args = self.reqparse.parse_args()
+        # check for the rule things
+        rule = Rule(port=args['port'], protocol=args['protocol'], \
+                    action=args['action'])
+        ip = args.get('ip', None)
+        mac = args.get('mac', None)
+        if not (ip == None):
+            rule.ip = IP(ip=ip.ip, ipv4=ip.ipv4)
+        if not (mac == None):
+            rule.mac = MAC(mac=mac.mac)
+
+        session.add(rule)
+        session.commit()
+        return [], 200
 
 class PacketListResource(Resource):
     def __init__(self):
