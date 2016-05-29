@@ -1,4 +1,5 @@
 import iptc
+import time
 from models import create_session
 from models import Rule
 
@@ -27,7 +28,7 @@ class Firewall():
             self.table.autocommit = False
             for rule in self.rules:
                 self.createRule(rule)
-            self.table.commi()
+            self.table.commit()
             self.table.autocommit = True
 
     def createRule(self, rule_dic):

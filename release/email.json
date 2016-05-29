@@ -1,0 +1,11 @@
+{"email":
+	{
+		"email_to": "gustavofrgomes@hotmail.com",
+		"subject": "Notification From Heimdall Secure Gateway",
+		"greeting": "Hello there Mr/Mrs",
+		"users_name": "Gustavo",
+		"reason": "Testing this email thingie",
+		"goodbye": "Thank you for your attention,",
+		"sign":"Sent From Heimdall Secure Gateway."
+	}
+}

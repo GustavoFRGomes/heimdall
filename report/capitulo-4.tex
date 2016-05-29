@@ -34,18 +34,37 @@ This is accomplished by using the REST architecture. This is the
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
-The database is the centerpiece of the entire system. It uses the SQLite
-database management system and it is mostly interacted with using a Python
-module named SQLAlchemy.
+The database can be considered the center of the entire system since it will be
+where all of the data stored to represent the firewall rules as well as the
+packets which were flagged by the user. It will also contain pairs of username
+and password representation for the user authentication even though this only
+having one user registered might be enough for this type of system.
+The database management system is SQLite 3 which as already a good API provided
+in the Python standard libraries, nonetheless this project will make use of a
+package called SQLAlchemy that can is freely available online which abstracts
+the developer from the SQL queries.
 
-Using the \emph{SQLAlchemy} module we could declare classes that will represent
-our tables and their attributes within the database on a Python script. This
-way there is also an abstraction for the SQL queries, where the developer can
-call methods to add, delete, update and filter through the data that is within
-the database. This is accomplished, as said previously, by declaring classes to
-represent the models of the data, and declaring the data types for each
-attribute and some properties that they might have, e.g. declaring an attribute
-as unique within a table.
+The SQLAlchemy module enables the programmer to represt all of the entities as
+well as the relationships between them using Python classes that inherit from
+the Model superclass provided by SQLAlchemy. This way the developer only need to
+declare the name of the attributes as well as the table name by declaring them
+as attributes of the classes.
+
+The models that need to be implemented in order for the whole system to work as
+intended are as follows:
+\begin{enumerate}
+	\item User -- representing the user's credentials, username and password
+		fields.
+	\item Rule -- represents a rule for the firewall system to execute.
+	\item Rule_IP -- as the IP that the rule might have associated to it.
+	\item Packet -- as a representation of a network packet, especially used for
+		the notifications.
+\end{enumerate}
+
+These are all entities in the database and will conveil all of the data for the
+application and the rest of the subsystems will all needs to routinely interact
+with the database in order to get the rules for the firewall, to authenticate
+users or even to get the information for the email and app notifications.
 
 % insert and explain at least one of the models
 
@@ -63,8 +82,25 @@ The database is organized with the following schema:
 
 %insert an image of the database's schema here
 
+% Describe each entity within the database.
+
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
+The Email Notification service will be keep notifying the user whenever he isn't
+at home, this is a measure of securing the local network, but it would also need
+a server to which both the gateway device and a possible mobile application
+would need to connect in order to make communication possible.
+
+Through email it will be easier for the device to simply send messages of what
+is happening with the devices inside their domestic network. If there are any
+flagged communitcations are performed then this subsystem will inform within
+regular, user defined, intervals of time, e.g. every two hours send a report if
+any activity, signalled by the user as note-worthy, has occured.
+
+As referred before this will be a complement for the Android notifications
+because this will only occur whenever the user is not home, this is all done by
+logging when the last request to the web service preventing that both the email
+and Android notifications to overlap.
 
 \section{Firewall Handler Subsystem}
 \label{chap4:sec:firewall-sys}
