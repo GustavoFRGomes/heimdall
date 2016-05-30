@@ -15,20 +15,66 @@ can be exchanged for others which could have better performance or efficiency.
 \section{Web Service Subsystem}
 \label{chap4:sec:web-sys}
 % divide it in Flask subsection and Android App subsection
-The Web Service was done using the Flask micro-framework implemented in Python.
-As already said in the previous chapter this framework allows for the use of
-third-party extensions as the ones used to develop the web service API. These
-extensions are:
+% The Web Service was done using the Flask micro-framework implemented in Python.
+% As already said in the previous chapter this framework allows for the use of
+% third-party extensions as the ones used to develop the web service API. These
+% extensions are:
+% \begin{enumerate}
+% 	\item Flask-RESTful
+% 	\item Flask-SQLAlchemy
+% \end{enumerate}
+
+% This system also can be divided into the Web Server and the Android Companion
+% application. These are made using a different technology stack, Python's Flask
+% and the Android Application, and because of this the communication between these
+% two systems need to deploy the same communication protocol and architecture.
+% This is accomplished by using the REST architecture. This is the
+The Web Service will be responsible for the communication between the user and
+the firewall and notification system. It is in the Web Service's API that all of
+the functionality needs to be defined.
+
+These functionalities are as follows:
 \begin{enumerate}
-	\item Flask-RESTful
-	\item Flask-SQLAlchemy
+	\item Check for notifications on the server.
+	\item List the ruleset of the server
+	\item Add rules to the ruleset
+	\item Remove rules from the ruleset
+	\item Get reports with counters
 \end{enumerate}
 
-This system also can be divided into the Web Server and the Android Companion
-application. These are made using a different technology stack, Python's Flask
-and the Android Application, and because of this the communication between these
-two systems need to deploy the same communication protocol and architecture.
-This is accomplished by using the REST architecture. This is the
+As said in the previous chapter the Web Service will be integrated within the
+Raspberry Pi and it will make use of the Flask framework. The Web Service was
+developed using the REST architecture as the foundation and respecting the six
+principles which qualify it as so:
+\begin{enumerate}
+	\item Client-Server architecture with a clear separation between the two.
+	\item Stateless -- every request from the client must contain all the
+		pertinent information, which includes authentication credentials, for
+		example. The server should not store any session information about the
+		client.
+	\item Cache -- responses from the client might be chacheable or not by the
+		server or intermidiate systems in order to maximing performance. These
+		responses must be labeled by the server as cacheable or noncacheable.
+	\item Uniform Interface -- the protocol used between the client and the
+		server resources must be well defined and standardized, for exmaple the
+		use of the HTTP protocol.
+	\item Layered Interface -- other machines and systems might be added between
+		the client and the server for reliability, scalability or performance
+		reasons.
+	\item Code-on-Demand -- optionally, clients can dowload and execute code
+		from the server in their own context.
+\end{enumerate}
+(These principles were first described in Roy Fielding's Ph.D. dissertation.)
+
+The API can be accessed using the HTTP protocol and the following types of
+headers that already come with the protocol specification:
+\begin{enumerate}
+	\item GET
+	\item POST
+	\item DELETE
+	\item PUT
+	\item AUTHENTICATE (check for the official name for the auth header)
+\end{enumerate}
 
 % \begin{lstlisting}[caption=Trecho de código usado no projeto.]
 
@@ -86,21 +132,41 @@ The database is organized with the following schema:
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
-The Email Notification service will be keep notifying the user whenever he isn't
-at home, this is a measure of securing the local network, but it would also need
-a server to which both the gateway device and a possible mobile application
-would need to connect in order to make communication possible.
+The Email Notification Service will act as a complement to the Android
+applciation and will only send out notifications only after a certain,
+user defined, amount of time of the last call to the Web Service and it will
+keep doing so by deploying cycles, with a duration also defined by the user of
+the system.
 
-Through email it will be easier for the device to simply send messages of what
-is happening with the devices inside their domestic network. If there are any
-flagged communitcations are performed then this subsystem will inform within
-regular, user defined, intervals of time, e.g. every two hours send a report if
-any activity, signalled by the user as note-worthy, has occured.
+By making use of the \emph{email} module provided within Python's Standard
+Library, it is possible to connect to an account on a SMTP server in order to
+send any email, after the input of user credentials such as the email addres and
+the password of that account. In the context of this project a Google Gmail
+account was used to be the source of the email message and it will send emails
+regularly to the user's email account with updates on the network that passes
+through the gateway before heading to the Internet.
 
-As referred before this will be a complement for the Android notifications
-because this will only occur whenever the user is not home, this is all done by
-logging when the last request to the web service preventing that both the email
-and Android notifications to overlap.
+% last thing!!!
+% The Email Notification service will be keep notifying the user whenever he isn't
+% at home, this is a measure of securing the local network, but it would also need
+% a server to which both the gateway device and a possible mobile application
+% would need to connect in order to make communication possible.
+
+% Through email it will be easier for the device to simply send messages of what
+% is happening with the devices inside their domestic network. If there are any
+% flagged communitcations are performed then this subsystem will inform within
+% regular, user defined, intervals of time, e.g. every two hours send a report if
+% any activity, signalled by the user as note-worthy, has occured.
+
+% As referred before this will be a complement for the Android notifications
+% because this will only occur whenever the user is not home, this is all done by
+% logging when the last request to the web service preventing that both the email
+% and Android notifications to overlap.
+
+% Using the \emph{email} module present in the Python standard library it was
+% possible to connect to an SMTP server like Googles gmail and after providing
+% access credentials, username and password, the system can now send emails for a
+% specified email address.
 
 \section{Firewall Handler Subsystem}
 \label{chap4:sec:firewall-sys}

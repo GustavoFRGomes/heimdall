@@ -80,35 +80,37 @@ messages that might be received as a response from the web service.
 
 \subsection{Flask}
 \label{chap3:sec:tools:sub:flask}
-The web service component for that runs on the Raspberry Pi was implemented
-using the Flask framework. Flask is a Python micro-framework used for the development
-of web applications but due to the freedom given the this framework extensions
-could be created to make authentication, URL management, database interaction
-and also web service development possible. In order to develop these solutions
-the Flask framework makes use of extensions.
-
-One of these extensions is called Flask-RESTful which enables developers to
-implement RESTful APIs by declaring the Resources and the URIs that should be
-available to the client. There are six principles that are considered teh
-foundation of the REST architeture:
-%Roy Fielding's Ph.D. dissertation that introduces the REST architecture
+\emph{Flask} is a micro-framework for the development of web applications. It
+was designed as an small yet extensible framework providing a solid core with
+basic services as:
 \begin{enumerate}
-	\item Client-Server architecture with a clear separation between the two.
-	\item Stateless -- every request from the client must contain all the
-		pertinent information, which includes authentication credentials, for
-		example. The server should not store any session information about the
-		client.
-	\item Cache -- responses from the client might be chacheable or not by the
-		server or intermidiate systems in order to maximing performance. These
-		responses must be labeled by the server as cacheable or noncacheable.
-	\item Uniform Interface -- the protocol used between the client and the
-		server resources must be well defined and standardized, for exmaple the
-		use of the HTTP protocol.
-	\item Layered Interface -- other machines and systems might be added between
-		the client and the server for reliability, scalability or performance
-		reasons.
-	\item Code-on-Demand -- optionally, clients can dowload and execute code
-		from the server in their own context.
+	\item routing;
+	\item debugging;
+	\item Web Server Gateway Interface (WSGI);
+	\item Template Support.
+\end{enumerate}
+
+The main objective with this framework is to avoid any features that might be
+unnecessary for any of the developers. In order to make up for this lack of
+functionality there is a support for extensions that can amplify these
+funcionalities as, for example, authentication, development of web services and
+database access. It is up to the developer to choose the extensions they might
+need or even implement their own ones.
+\emph{Flask} has two main dependencies, which can be divided into \emph{Jinja2} for
+template support and \emph{Werkzeug} for the rest of the services mentioned
+above.
+
+In the context of this software project the \emph{Flask} framework will be the
+foundation of the web service, which will run on the Raspberry Pi, alongside the
+email notification, database and firewall interface service. In order to develop
+the web service to interact with the Android application there was the
+integration of the following extensions:
+\begin{enumerate}
+	\item flask-sqlalchemy -- to work with the database and its data models.
+	\item flask-restful -- for the development of the API structure using the
+		REST principles.
+	\item flask-httpauth -- to enable the authentication of the users accessing
+		the Web API.
 \end{enumerate}
 
 \subsection{SQLite}

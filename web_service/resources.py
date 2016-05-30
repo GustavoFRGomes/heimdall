@@ -127,9 +127,35 @@ class RuleResource(Resource):
         return rule, 201
 
 class RuleListResource(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        #self.reqparse.add_argument('id')
+        self.reqparse.add_argument('port')
+        self.reqparse.add_argument('protocol')
+        self.reqparse.add_argument('action')
+        super(RuleListResource, self).__init__()
+
+
     @marshal_with(list_fields)
     def get(self):
         return session.query(Rule).all()
+
+    def post(self):
+        # Check how to add with relationships if seperately or with the model of
+        # foreign key
+        args = self.reqparse.parse_args()
+        rule = Rule(port=args['port'], action=['action'], protocol['protocol'])
+
+        if not (args.get('ip', None) == None):
+            ip_args = args['ip']
+            ip = IP(ip=ip_args['ip'], ipv4=ip_args['ipv4'])
+        else:
+            ip = None
+
+        if not (args.get('mac', None) == None):
+            mac_args = args['mac']
+            mac = MAC(mac=mac_args['mac'])
+
 
 # Make available only the 10 newest notifications or something.
 # Pass the date/timestamp for the query of the data
