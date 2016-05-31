@@ -5,6 +5,25 @@ uri = {
     'user': 'http://127.0.0.1:5000/user'
 }
 
+def man_addRule():
+    print('Port: ')
+    port = input()
+
+    print('Protocol:')
+    protocol = input()
+
+    print('Action:')
+    action = input()
+
+    print('IP:')
+    ip = input()
+    if not ip == '':
+        print('IPv4?')
+        ipv4 = input()
+
+    print('Mac:')
+    mac = input()
+
 def addRule(port, action, protocol):
     rule = {'port':port, 'protocol':protocol, 'action':action}
     req.post(uri['rule'], json=rule)

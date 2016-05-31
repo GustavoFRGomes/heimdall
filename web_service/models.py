@@ -37,6 +37,9 @@ class Rule(Base):
     mac = relationship("MAC", backref=backref('rules', order_by=id), \
                         uselist=False)
 
+    counter = relationship('Counter', backref=backref('rules', order_by=id), \
+            uselist=False)
+
     def __repr__(self):
         return '<Rule {0} @ {1} with: {2}'.format(self.protocol, self.port, \
                                                   self.action)
@@ -78,6 +81,15 @@ class MAC(Base):
     def __repr__(self):
         return '<MAC id: {0} [{1}] rule:{2}'.format(self.id, self.mac, \
                                                     self.rule_id)
+
+class Counter(Base):
+    __tablename__ = 'counters'
+
+    id = Column(Integer(), primary_key=True)
+    rule_id = Column(Integer(), ForeignKey('rules.id'), nullable=False)
+    timestamp = Column(String(100))
+    packets = Column(Integer())
+    byte = Column(Integer())
 
 def create_db(uri='sqlite:///./heimdall.sqlite3'):
     from sqlalchemy import create_engine

@@ -1,7 +1,8 @@
 import iptc
 import time
+from time_aux import getTime # create a timestamp getter returns string
 from models import create_session
-from models import Rule
+from models import Rule, Counter
 
 class Firewall():
 
@@ -16,18 +17,32 @@ class Firewall():
         return self.session.query(Rule).all()
 
     def flushRules(self):
-        pass
+        """
+        Method to flush all of the rules within the chain.
+        """
+        self.chain.flush()
 
     def submitRule(self, rule):
         self.chain.insert_rule(rule)
+
+    def resetCounters(self):
+        """
+        Method that will zero all of the counters for the rule set and drop them
+        from the Database because of the result.
+        """
+        self.chain.zero_counters()
+        counters = self.session.query(Counter).all()
+        self.session.delete(counters)
 
     def ruleUpdate(self):
         rules = self.getFromDB()
         if not self.rules == rules:
             self.rules = rules
+            self.resetCounters()
             self.table.autocommit = False
             for rule in self.rules:
-                self.createRule(rule)
+                r = self.createRule(rule)
+                submirRule(r)
             self.table.commit()
             self.table.autocommit = True
 
@@ -42,15 +57,32 @@ class Firewall():
         # check for action DROP_NOTIFY
         if rule_dic['action'] == 'NOTIFY':
             # do only log action
-            pass
+            rule.target = iptc.Target(rule, 'ACCEPT')
         if rule_dic['action'] == 'BLOCK_NOTIFY':
             rule.target = iptc.Target(rule, 'BLOCK')
 
-        self.chain.insert_rule(rule)
+        # self.chain.insert_rule(rule)
+        return rule
+
+    def counterDB(self, results):
+        # add the id of the rule and the packets and bytes from the tuple
+        # respectively!
+        rules = self.getFromDB()
+        for rule, pair in zip(rules, results):
+            counter = Counter(rule_id=rule.id, timestamp=getTime(), \
+                    packets=pair[0], byte=pair[1])
+            self.session.add(counter)
+
+    def counterUpdate(self):
+        results = []
+        for rule in self.chain.rules:
+            results.append(rule.get_counters()
+        self.counterDB(results)
 
     def run(self, rest_time=30):
         while True:
             self.ruleUpdate()
+            # self.counterUpdate()
             time.sleep(30) # 30 secon wait
 
 if __name__ == '__main__':

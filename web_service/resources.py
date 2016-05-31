@@ -111,6 +111,7 @@ class RuleResource(Resource):
             abort(404, message="Can't find {0} in Rule Table".format(id))
         session.delete(rule)
         session.commit()
+        return 'Deletion successful!', 200
     # delete
     # post
     def post(self):
@@ -128,42 +129,15 @@ class RuleListResource(Resource):
         self.reqparse.add_argument('port')
         self.reqparse.add_argument('protocol')
         self.reqparse.add_argument('action')
-<<<<<<< HEAD
-        super(RuleListResource, self).__init__()
-
-
-    @marshal_with(list_fields)
-=======
         self.reqparse.add_argument('ip')
         self.reqparse.add_argument('mac')
         super(RuleListResource, self).__init__()
 
     @marshal_with(rule_fields)
->>>>>>> b15e1d8aa2c3e1806810d9b5de8caa7a8370d3ec
     def get(self):
         return session.query(Rule).all()
 
     def post(self):
-<<<<<<< HEAD
-        # Check how to add with relationships if seperately or with the model of
-        # foreign key
-        args = self.reqparse.parse_args()
-        rule = Rule(port=args['port'], action=['action'], protocol['protocol'])
-
-        if not (args.get('ip', None) == None):
-            ip_args = args['ip']
-            ip = IP(ip=ip_args['ip'], ipv4=ip_args['ipv4'])
-        else:
-            ip = None
-
-        if not (args.get('mac', None) == None):
-            mac_args = args['mac']
-            mac = MAC(mac=mac_args['mac'])
-
-
-# Make available only the 10 newest notifications or something.
-# Pass the date/timestamp for the query of the data
-=======
         """
         POST handler to add a new rule to the ruleset.
         :return: empty list with 200 success code tuple.
@@ -183,7 +157,6 @@ class RuleListResource(Resource):
         session.commit()
         return [], 200
 
->>>>>>> b15e1d8aa2c3e1806810d9b5de8caa7a8370d3ec
 class PacketListResource(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
