@@ -88,6 +88,27 @@ headers that already come with the protocol specification:
 	\item AUTHENTICATE (check for the official name for the auth header)
 \end{enumerate}
 
+The web service will communicate using JSON for data structuring enabling the
+independence of programming language for the web service and the applications
+that will interact with the user and the web service itself.
+
+The API for this RESTful web service is as follows:
+\begin{enumerate}
+	\item "rule/<int:id>" -- making it available for the client to check for a
+		specific rule, as well as delete or edit it, using the GET, DELETE and
+		PUT requests, respectively, from the HTTP protocol.
+	\item "/rules" -- this URI will enable the client application to request for
+		the full set of rules currently running on the server, by using the GET
+		request. By making a request with the POST type the client application
+		can append new rules to the rule set already in place, which will then
+		be updated during the next cycle of the firewall subsystem.
+	\item "/counter/<int:id>" -- URI that will only be accessed through GET
+		request and provided with the id of the rule it will deliver the
+		counters value, with number of packets and total number of bytes that
+		were matched with that rule.
+	\item "/counters" -- also only accessible through GET requests and sends the
+		list of every counter for every rule in place, with their respective
+		packets and number of bytes.
 % \begin{lstlisting}[caption=Trecho de código usado no projeto.]
 
 \section{Database Subsystem}
