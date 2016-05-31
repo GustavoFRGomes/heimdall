@@ -5,6 +5,18 @@
 \section{Introduction}
 \label{chap4:sec:intro}
 % Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
+Within this chapter there will be a detailed description of the various
+subsystems of this project. The design was inspired by the Microservice
+architecture which is the new trend in architecture, especially in the
+development of web applications.
+This type of architecture design allows the division and modularization of
+complex systems by grouping all the functionality into various services which
+will then be called only when requested. This is good from a developer's
+perspective because it enables the division all the moving parts necessary to
+make the system run as expected and it also allows the individual development of
+these subsystems that can run independently from all the other systems.
+
+% older version of the intro below
 This chapter will describe the four subsystem that were developed and that
 compose the entire project. As said previously the entire system consists of
 four subsystems that interact with one another using the database, the intention
@@ -102,7 +114,7 @@ intended are as follows:
 	\item User -- representing the user's credentials, username and password
 		fields.
 	\item Rule -- represents a rule for the firewall system to execute.
-	\item Rule_IP -- as the IP that the rule might have associated to it.
+	\item Rule\_IP -- as the IP that the rule might have associated to it.
 	\item Packet -- as a representation of a network packet, especially used for
 		the notifications.
 \end{enumerate}

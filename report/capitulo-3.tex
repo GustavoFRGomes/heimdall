@@ -113,17 +113,57 @@ integration of the following extensions:
 		the Web API.
 \end{enumerate}
 
-\subsection{SQLite}
-\label{chap3:sec:tools:sub:sqlite}
-The database handling is through the use of the another Python module named
-SQLAlchemy which abstracts the developer from the SQL query language by using
-Python classes to model the SQLite 3 database entities, and also query methods
-for each class that allow the programmer to query and filter the results within
-the database through Python methods.
+% \subsection{SQLite}
+% \label{chap3:sec:tools:sub:sqlite}
+% The database handling is through the use of the another Python module named
+% SQLAlchemy which abstracts the developer from the SQL query language by using
+% Python classes to model the SQLite 3 database entities, and also query methods
+% for each class that allow the programmer to query and filter the results within
+% the database through Python methods.
 
-The SQLite was the chosen RDBM due to it's low computational resource
-requirements. This databae has a cap of data at 3TB which is more then suficient
-for the purposes of this project.
+% The SQLite was the chosen RDBM due to it's low computational resource
+% requirements. This databae has a cap of data at 3TB which is more then suficient
+% for the purposes of this project.
+
+\subsection{SQLAlchemy}
+\label{chap3:sec:tools:sub:sqlalcemy}
+SQLAlchemy is a library used to interact with the different SQL databases
+available. This modules allows the conversion of the data within the database to
+Python objects representing the models for each table. This library is a third
+party module, not included in the Python Standard Libraries, that was created by
+Mike Bayer in 2005.
+
+This library is widely adopted within the Python developer universe because it
+simplifies the access and manipulation of data inside a database. It supports
+some of the most common database systems as, for example:
+\begin{enumerate}
+	\item Postgres
+	\item MySQL
+	\item SQLite
+	\item Oracle
+\end{enumerate}
+By using this library a developer could abstract the code from the underlying
+database and its SQL peculiarities. It also helps with the sanitization of the
+data which is inputed to the database preventing common security flaws like SQL
+injection attacks.
+
+SQLAlchemy also provides flexibility by having two alternative modes of usage,
+which could be used interchangeably depending on the personnal preferences of
+the developer, these two distinct ways are:
+\begin{enumerate}
+	\item SQL Expression Language also known as Core -- is mostly a Pythonic way
+		of representing common SQL statements and expressions with almost no
+		abstraction from typical SQL language. This is also the foundation of
+		the next usage mode.
+		% ORM - Object Relational Mapper
+	\item ORM -- has a more high-level abstraction and leveraging a declarative
+		system that enables the developer to work in a more idiomatic way. This
+		is accomplished by binding the database schema with data models
+		represented as Python classes.
+\end{enumerate}
+
+This project makes extensive use of the SQLAlchemy's ORM mode with a SQLite3
+database system.
 
 \subsection{iptables}
 \label{chap3:sec:tools:sub:iptables}
@@ -139,11 +179,11 @@ of their traversal through the network card, due to the hooks from the Netfilter
 framework. These built-in chains and their
 respective hooks are as follows:
 \begin{enumerate}
-	\item PREROUTING -- NF_IN_PRE_ROUTING
-	\item INPUT -- NF_IN_LOCAL_IN
-	\item FORWARD -- NF_IP_FORWARD
-	\item OUPUT -- NF_IP_LOCAL_OUT
-	\item POSTROUTING -- NF_IP_POST_ROUTING
+	\item PREROUTING -- NF\_IN\_PRE\_ROUTING
+	\item INPUT -- NF\_IN\_LOCAL\_IN
+	\item FORWARD -- NF\_IP\_FORWARD
+	\item OUPUT -- NF\_IP\_LOCAL\_OUT
+	\item POSTROUTING -- NF\_IP\_POST\_ROUTING
 \end{enumerate}
 
 \section{Conclusions}
