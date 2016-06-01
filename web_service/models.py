@@ -41,8 +41,8 @@ class Rule(Base):
             uselist=False)
 
     def __repr__(self):
-        return '<Rule {0} @ {1} with: {2}'.format(self.protocol, self.port, \
-                                                  self.action)
+        return '<Rule {3} {0} @ {1} with: {2}>'.format(self.protocol, self.port, \
+                                                  self.action, self.id)
 
 class Packet(Base):
    __tablename__ = 'packets'
@@ -55,7 +55,7 @@ class Packet(Base):
    host = Column(String(124))
 
    def __repr__(self):
-       return '<Packet {0}:{1} @ {2}'.format(self.protocol, self.port, self.date)
+       return '<Packet {0}:{1} @ {2}>'.format(self.protocol, self.port, self.date)
    # Put the proper Rule that has been violated with an relationship
 
 class IP(Base):
@@ -67,7 +67,7 @@ class IP(Base):
     ipv4 = Column(Boolean(), default=True)
 
     def __repr__(self):
-        return '<IP id:{0} [{1}] v4? {2} rule:{3}'.format(self.id, self.ip, \
+        return '<IP id:{0} [{1}] v4? {2} rule:{3}>'.format(self.id, self.ip, \
                                                  self.rule_id, self.ipv4)
 
 class MAC(Base):
@@ -79,7 +79,7 @@ class MAC(Base):
 
 
     def __repr__(self):
-        return '<MAC id: {0} [{1}] rule:{2}'.format(self.id, self.mac, \
+        return '<MAC id: {0} [{1}] rule:{2}>'.format(self.id, self.mac, \
                                                     self.rule_id)
 
 class Counter(Base):
@@ -101,6 +101,6 @@ def create_session(uri='sqlite:///./heimdall.sqlite3'):
     from sqlalchemy import create_engine
     from sqlalchemy.orm import scoped_session
     from sqlalchemy.orm import sessionmaker
-    Session = sessionmaker(autocommit=True, autoflush=True, \
+    Session = sessionmaker(autocommit=True, autoflush=False, \
                            bind=create_engine(uri))
     return scoped_session(Session)
