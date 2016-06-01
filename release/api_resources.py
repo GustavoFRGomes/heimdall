@@ -147,9 +147,13 @@ class RuleListResource(Resource):
 
         # Check if ip and mac is passed and created by these things.
         if ip:
-            rule.ip = IP(ip['ip'], ip['ipv4'])
+            new_ip = IP()
+            new_ip.ip = ip['ip']
+            new_ip.ipv4 = ip['ipv4']
+            rule.ip = new_ip
         if mac:
-            rule.mac = MAC(mac['mac'])
+            rule.mac = MAC()
+            rule.mac.mac = mac['mac']
 
         session.begin()
         session.add(rule)

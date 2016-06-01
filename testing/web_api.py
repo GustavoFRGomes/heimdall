@@ -61,12 +61,13 @@ def postRule(port, action, protocol, ip=None, mac=None):
     rule['port'] = port
     rule['protocol'] = protocol
     rule['action'] = action
-    if not ip:
+    if ip:
         rule['ip'] = ip
-    if not mac:
+    if mac:
         rule['mac'] = mac
 
     msg = json.dumps(rule)
+    print(msg)
     url = uri['rules']
     response = req.post(url, msg)
     # print(response.text)

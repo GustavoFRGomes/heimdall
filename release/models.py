@@ -30,34 +30,19 @@ class Rule(Base):
     action = Column(Enum(*ACTIONS))
 
     #ordering by the mac id and one to one
-    ip = relationship("IP", backref=backref('rules', order_by=id), \
+    ip = relationship("IP", backref=backref('IP', order_by=id), \
                         uselist=False)
 
     #ordering by the mac id and one to one
-    mac = relationship("MAC", backref=backref('rules', order_by=id), \
+    mac = relationship("MAC", backref=backref('MAC', order_by=id), \
                         uselist=False)
 
-    counter = relationship('Counter', backref=backref('rules', order_by=id), \
+    counter = relationship('Counter', backref=backref('Counter', order_by=id), \
             uselist=False)
 
     def __repr__(self):
         return '<Rule {3} {0} @ {1} with: {2}>'.format(self.protocol, self.port, \
                                                   self.action, self.id)
-
-class Packet(Base):
-   __tablename__ = 'packets'
-
-   id = Column(Integer(), primary_key=True)
-   port = Column(Integer())
-   protocol = Column(Enum(*PROTOCOLS))
-   date = Column(String(258))
-   source = Column(String(124))
-   host = Column(String(124))
-
-   def __repr__(self):
-       return '<Packet {0}:{1} @ {2}>'.format(self.protocol, self.port, self.date)
-   # Put the proper Rule that has been violated with an relationship
-
 class IP(Base):
     __tablename__ = 'ips'
 
@@ -68,7 +53,7 @@ class IP(Base):
 
     def __repr__(self):
         return '<IP id:{0} [{1}] v4? {2} rule:{3}>'.format(self.id, self.ip, \
-                                                 self.rule_id, self.ipv4)
+                                                 self.ipv4, self.rule_id)
 
 class MAC(Base):
     __tablename__ = 'macs'

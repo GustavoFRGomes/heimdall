@@ -6,12 +6,11 @@ from models import Rule, Counter
 
 class Firewall():
 
-    def __init__(self):
+    def __init__(self, table='INPUT'):
         self.session = create_session()
         self.table = iptc.Table(iptc.Table.FILTER)
-        self.chain = iptc.Chain(self.table, "INPUT")
+        self.chain = iptc.Chain(self.table, table)
         self.rules = None
-        pass
 
     def getFromDB(self):
         return self.session.query(Rule).all()
@@ -23,6 +22,9 @@ class Firewall():
         self.chain.flush()
 
     def submitRule(self, rule):
+        """
+            Method to insert one rule at a time into the chain.
+        """
         self.chain.insert_rule(rule)
 
     def resetCounters(self):
@@ -42,9 +44,26 @@ class Firewall():
             self.table.autocommit = False
             for rule in self.rules:
                 r = self.createRule(rule)
-                submirRule(r)
+                submitRule(r)
             self.table.commit()
             self.table.autocommit = True
+
+    def addRule(self, db_rule):
+        rule = iptc.Rule()
+        rule.protocol = db_rule.protocol
+        match = rule.create_match(db_rule.protocol)
+        match.dport = str(db_rule.port)
+        if db_rule.ip:
+            rule.src = db_rule.ip.ip
+        if db_rule.mac:
+            mac_match = rule.create_match('mac')
+            mac_match.mac_source = db_rule.mac.mac
+        if db_rule.action in ['ACCEPT', 'NOTIFY']:
+            rule.target = iptc.Target(rule, db_rule.action)
+        if db_rule.action in ['BLOCK', 'BLOCK_NOTIFY']:
+            rule.target = iptc.Target(rule, db_rule.action)
+
+        return rule
 
     def createRule(self, rule_dic):
         rule = iptc.Rule()
@@ -77,6 +96,7 @@ class Firewall():
         results = []
         for rule in self.chain.rules:
             results.append(rule.get_counters())
+            print(results[-1])
         self.counterDB(results)
 
     def run(self, rest_time=30):
