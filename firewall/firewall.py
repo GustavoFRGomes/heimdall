@@ -32,7 +32,7 @@ class Firewall():
         """
         self.chain.zero_counters()
         counters = self.session.query(Counter).all()
-        self.session.delete(counters)
+        self.session.query(Counter).delete()
 
     def ruleUpdate(self):
         rules = self.getFromDB()
