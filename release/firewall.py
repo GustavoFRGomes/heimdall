@@ -47,6 +47,7 @@ class Firewall():
                 submitRule(r)
             self.table.commit()
             self.table.autocommit = True
+            self.table.refresh()
 
     def addRule(self, db_rule):
         rule = iptc.Rule()
@@ -94,6 +95,7 @@ class Firewall():
 
     def counterUpdate(self):
         results = []
+        self.table.refresh()
         for rule in self.chain.rules:
             results.append(rule.get_counters())
             print(results[-1])
