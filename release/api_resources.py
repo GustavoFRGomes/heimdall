@@ -156,6 +156,7 @@ class RuleListResource(Resource):
         try:
             session.commit()
         except IntegrityError:
+            session.rollback()
             return "Unable to insert that rule, check passed params", 500
 
 
