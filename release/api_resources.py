@@ -6,6 +6,8 @@ from models import create_session
 
 from flask import request
 
+from sqlalchemy.exc import IntegrityError
+
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 from flask.ext.restful import fields
@@ -151,6 +153,9 @@ class RuleListResource(Resource):
 
         session.begin()
         session.add(rule)
-        session.commit()
+        try:
+            session.commit()
+        except IntegrityError:
+            return "Unable to insert that rule, check passed params", 500
 
 
