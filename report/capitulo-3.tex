@@ -186,6 +186,43 @@ respective hooks are as follows:
 	\item POSTROUTING -- NF\_IP\_POST\_ROUTING
 \end{enumerate}
 
+In order to interact with iptables on the Raspberry Pi, the system makes use of
+\emph{python-iptables} which is an extension module that makes a brigde between
+iptables and the Python programming language.
+This module makes use of Python objects to perform all the functionality for the
+firewall, including interacting and defining:
+\begin{enumerate}
+	\item Chains;
+	\item Tables;
+	\item Rules;
+\end{enumerate}
+
+The iptables application has the following four tables: (1) FILTER; (2) MANGLE;
+(3) RAW; (4) not sure. These tables allow for different purposes, and for the
+scope of this project only the \emph{FILTER} table is important, since the
+primary objective of the system being developed is to filter packets and
+connections according to rules established by the user.
+
+Python-iptables, also known as \emph{iptc}, allows the deveolper to access and
+interact with the firewall system for any of the aforementioned Tables, and
+allows the creation and management of the Chains within these tables.
+
+The iptables Chains are sets of rules that can be invoked whenever a packet
+matches the rules within that chain, iptables also provides three different
+predefined Chains which are:
+\begin{enumerate}
+	\item \emph{INPUT} -- for all packages that have as host the machine to
+		which they arrive;
+	\item \emph{FORWARD} -- covers all the network traffic that isn't destinted
+		nor originated from the machine in question;
+	\item \emph{OUTPUT} -- is the chain that handles all the traffic generated
+		by the host.
+\end{enumerate}
+
+Since the main functionality of this project is to filter traffic that is
+passing through the gateway, the main Table and Chain that will be used are
+FILTER and FORWARD, respectively.
+
 \section{Conclusions}
 \label{chap3:sec:concs}
 In this chapter we have talked about the underlying architecture of the system
