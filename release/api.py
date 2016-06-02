@@ -25,4 +25,5 @@ api.add_resource(RuleListResource, '/rules')
 api.add_resource(CounterListResource, '/counters')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    context = ('tls/heimdall.crt', 'tls/heimdall.key')
+    app.run(debug=True, ssl_context=context)
