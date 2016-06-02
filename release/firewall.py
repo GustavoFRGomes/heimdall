@@ -87,7 +87,9 @@ class Firewall():
     def counterDB(self, results):
         # add the id of the rule and the packets and bytes from the tuple
         # respectively!
+        print(results)
         rules = self.getFromDB()
+        print(rules)
         for rule, pair in zip(rules, results):
             counter = Counter(rule_id=rule.id, timestamp=getTime(), \
                     packets=pair[0], byte=pair[1])
@@ -98,7 +100,7 @@ class Firewall():
         self.table.refresh()
         for rule in self.chain.rules:
             results.append(rule.get_counters())
-            print(results[-1])
+            # print(results[-1])
         self.counterDB(results)
 
     def run(self, rest_time=30):
