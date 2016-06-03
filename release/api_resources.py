@@ -1,20 +1,18 @@
 from models import Rule, IP, MAC
 from models import User
 from models import Counter
-
 from models import create_session
 
 from flask import request
-
-from sqlalchemy.exc import IntegrityError
-
 from flask.ext.httpauth import HTTPBasicAuth as httpauth
-
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 from flask.ext.restful import fields
 from flask.ext.restful import marshal_with
 from flask.ext.restful import Resource
+
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from time_aux import getTime # create a timestamp getter returns string
 
 ip_fields = {
         'ip': fields.String,
@@ -66,6 +64,14 @@ def verify_password(username, password):
     if not user or not user.check_password(password):
         # abort(401, message="Username and/or Password wrong!")
         return False
+    session.begin()
+    user.timestamp = getTime()
+    try:
+        session.commit()
+    except (InvalidRequestError, IntegrityError) as e:
+        print('Problem adding timstamp to user login.')
+        session.rollback()
+
     return True
 
 class RuleResource(Resource):
