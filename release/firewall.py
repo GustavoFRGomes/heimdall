@@ -6,10 +6,10 @@ from models import Rule, Counter
 
 class Firewall():
 
-    def __init__(self, table='INPUT'):
+    def __init__(self, chain='INPUT'):
         self.session = create_session()
         self.table = iptc.Table(iptc.Table.FILTER)
-        self.chain = iptc.Chain(self.table, table)
+        self.chain = iptc.Chain(self.table, chain)
         self.rules = None
 
     def getFromDB(self):

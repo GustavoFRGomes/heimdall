@@ -165,19 +165,43 @@ The database is organized with the following schema:
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
-The Email Notification Service will act as a complement to the Android
-applciation and will only send out notifications only after a certain,
-user defined, amount of time of the last call to the Web Service and it will
-keep doing so by deploying cycles, with a duration also defined by the user of
-the system.
+The Email Notification subsystem will act as a complement for the Android
+application, which means that it will only send out notifications to the user if
+he isn't home. In order to detect the user, the Email Service queries the
+database to check when was the last time the user was making requests to the Web
+Service API, then calculates the time elapsed and if it's greater or equal to
+the cycle period it will send an email with a small report about the network
+traffic made inside the local network. It will then simply sleep until the next
+cycle repeating the process. This cycle time will be defined by the user when he
+initially configures the system in the Raspberry Pi.
+
+The user will need to define the email address where he wants to receive the
+notifications as well as the cycle periods, i.e., the time that needs to pass
+between notifications sent to the users email, lastly the user will also be
+asked to provide his first name in order for the system to address the user
+properly.
+
+% put a small template of the email as a code listing.
+
+The emails being sent will all have the same design which is defined in the a
+JSON formatted file named, \emph{email.json}. The Email Service will compose the
+email for the user based on this template changing the various fields according
+to the information that the user gave during initial configuration.
+
+A problem found with this feature was that the email system globally has become
+much more secure and it is impossible to send an email without an Email Provider
+which will also imply that the user would need to purchase or get a domain name
+in order to make this feature possible, the solution found for this problem was
+to create an email account that will have all the credentials and be prepared to
+be accessed by this subsystem, using the email address and the password of that
+account and connecting via a TLS connection to the email provider, which in this
+case is Google's Gmail. By doing this it is possible to send out emails to the
+user's specified account from that account created for the system.
 
 By making use of the \emph{email} module provided within Python's Standard
 Library, it is possible to connect to an account on a SMTP server in order to
-send any email, after the input of user credentials such as the email addres and
-the password of that account. In the context of this project a Google Gmail
-account was used to be the source of the email message and it will send emails
-regularly to the user's email account with updates on the network that passes
-through the gateway before heading to the Internet.
+send any email, after the input of user's credentials such as the email address
+and the password of that account.
 
 % last thing!!!
 % The Email Notification service will be keep notifying the user whenever he isn't
@@ -201,8 +225,69 @@ through the gateway before heading to the Internet.
 % access credentials, username and password, the system can now send emails for a
 % specified email address.
 
-\section{Firewall Handler Subsystem}
+\section{Firewall Interface Subsystem}
 \label{chap4:sec:firewall-sys}
+The Firewall Interface subsystem is responsible for the management of the rules
+within the gateway's firewall. The goal of this subsystem is to make the process
+of building the rule set for the firewall more dynamic in order to cope with
+different needs for the end-user. The firewall system itself is \emph{iptables}
+which was discussed in the previous chapter, under the \emph{Tools} section,
+this is all implemented using a Python class that will interact with the
+database, to get the rules, and the iptables, to apply them.
+
+This subsystem also makes use of a thrid-party library called
+\emph{python-iptables} which bridges the firewall system with the project's
+Firewall Interface. By using this library it is possible to change rules and
+even organize them dynamically.
+
+\subsection{Firewall Class}
+\label{chap4:sec:firewall-sys:firewall-class}
+There is a Firewall object that can be configured with the chains defined on
+\emph{iptables}, this can be accomplished by setting defining the named optional
+parameter when initializing a Firewall object, it also defaults to the 'FORWARD'
+chain in the \emph{iptables} system which is the one that this subsystem needs
+to interact with. It will always connect to the \emph{FILTER} table of
+\emph{iptables} since this is the table that filters all of the traffic passing
+through the machine, i.e. the Raspberry Pi.
+
+Since the entire system is modular the Firewall class can be used independently
+from the system itself. Of course it is still recommended that it should be
+paired at least with the database since it has methods to query a database using
+a \emph{SQLAlchemy} session.
+
+The methods that are provided in this class are the following:
+\begin{enumerate}
+	\item addRule() -- method that handles the conversion of rules inside the
+		database model object to \emph{python-iptables} rule objects.
+	\item submitRule(.) -- handles the submission of the rule to the database,
+		if the table from the database has the autocommit feature as False then
+		it will simply add the rule but not commit it to the working firewall
+		rule set.
+	\item flushRules() -- responsible for flushing all of the rules from
+		the chain.
+	\item resetCounters() -- method that will reset the counters for all of the
+		rules in the \emph{iptables}, as well as the data inside the database.
+		This is used when the rules change because the counters need to start
+		from zero and the database needs to be cleaned from the old rule set.
+	\item ruleUpdate() -- main cycle for this subsystem, which gets the rules
+		from the database, converts them from the models inside the database to
+		\emph{iptables} compliant rules, resets the counters and adds the rules
+		to the chain before ever commiting them to the firewall itself.
+	\item createRule(.) -- creates an \emph{iptables} rule using a dictionary
+		instead of an instance of the database models.
+	\item counterUpdate() -- updates the counters inside the database, since the
+		counters aren't dynamic per se, the table of the firewall needs to be
+		refreshed in order to update the values of the counters. This will then
+		publish the results in the database.
+	\item counterDB(.) -- method that receives the results of the counters and
+		connects them to each rule, afterwards sending it all to the database,
+		by converting the data into a database model object.
+	\item run(wait\_time) -- main method that will run both the ruleUpdate()
+		method as well as the counterUpdate() to always keep the rules tracked
+		and equal to the ones on the database. The \emph{wait\_time} param
+		defaults to 30 and it is the periodicity of the cycle, in seconds.
+\end{enumerate}
+
 The Firewall Subsytem consists of the firewall itself, which will be
 accomplished using the \emph{iptables} system, present in most Linux
 distributions as the default firewall system, and there is also a firewall

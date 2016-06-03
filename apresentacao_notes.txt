@@ -8,13 +8,6 @@ System Architecture
 Prototyping and Testing
 Conclusions and Future Work
 
-Flask with SSL and HTTPS
-http://flask.pocoo.org/snippets/111/
-
-Android
-http://stackoverflow.com/questions/3761737/https-get-ssl-with-android-and-self-signed-server-certificate
-
-
 ABSTRACT
 
 Nowadays the Internet of Things is a reccuring mostly becasue it is invading our
