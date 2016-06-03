@@ -8,6 +8,8 @@ from flask import request
 
 from sqlalchemy.exc import IntegrityError
 
+from flask.ext.httpauth import HTTPBasicAuth as httpauth
+
 from flask.ext.restful import reqparse
 from flask.ext.restful import abort
 from flask.ext.restful import fields
@@ -48,8 +50,18 @@ counters_fields = {
 
 # Creating a common session for the Database.
 session = create_session()
+auth = httpauth()
+
+@auth.get_password
+def get_pwd(username):
+    user = session.query(User).filter(username == User.username).first()
+    print(user)
+    if user:
+        return user.password # send password
+    return None
 
 class RuleResource(Resource):
+    decorators = [auth.login_required]
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
         self.reqparser.add_argument('port')
@@ -104,6 +116,7 @@ class CounterResource(Resource):
     #     self.reqparser.add_argument('packets')
     #     self.reqparser.add_argument('byte')
     #     super(CounterResource, self).__init__()
+    decorators = [auth.login_required]
 
     @marshal_with(counter_fields)
     def get(self, id):
@@ -113,12 +126,14 @@ class CounterResource(Resource):
         return counter
 
 class CounterListResource(Resource):
+    decorators = [auth.login_required]
     @marshal_with(counters_fields)
     def get(self):
         counters = session.query(Counter).all()
         return counters
 
 class RuleListResource(Resource):
+    decorators = [auth.login_required]
     def __init__(self):
         self.reqparser = reqparse.RequestParser()
         self.reqparser.add_argument('port', dest='port')
