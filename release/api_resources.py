@@ -52,13 +52,21 @@ counters_fields = {
 session = create_session()
 auth = httpauth()
 
-@auth.get_password
-def get_pwd(username):
-    user = session.query(User).filter(username == User.username).first()
-    print(user)
-    if user:
-        return user.password # send password
-    return None
+# @auth.get_password
+# def get_pwd(username):
+#     user = session.query(User).filter(username == User.username).first()
+#     print(user)
+#     if user:
+#         return user.password # send password
+#     return None
+
+@auth.verify_password
+def verify_password(username, password):
+    user = session.query(User).filter(username==User.username).first()
+    if not user or not user.check_password(password):
+        # abort(401, message="Username and/or Password wrong!")
+        return False
+    return True
 
 class RuleResource(Resource):
     decorators = [auth.login_required]

@@ -8,6 +8,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import backref
 from sqlalchemy.ext.declarative import declarative_base
 
+from werkzeug.security import check_password_hash, generate_password_hash
+
 Base = declarative_base()
 ACTIONS = ('NOTIFY', 'BLOCK', 'ACCEPT', 'BLOCK_NOTIFY')
 PROTOCOLS = ('tcp', 'udp')
@@ -18,6 +20,12 @@ class User(Base):
     username = Column(String(255), unique=True)
     password = Column(String(512))
     timestamp = Column(String(100))
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def __repr__(self):
         return '<User {0}>'.format(self.username)
