@@ -17,6 +17,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(255), unique=True)
     password = Column(String(512))
+    timestamp = Column(String(100))
 
     def __repr__(self):
         return '<User {0}>'.format(self.username)
