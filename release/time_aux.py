@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 
 def get_time():
     m_time = time.localtime()
@@ -36,3 +37,13 @@ def time2string(timestamp):
 def getTime():
     t = get_time()
     return time2string(t)
+
+def diff_time(old_time, new_time=None, unit='sec'):
+    old_date = datetime.strptime(old_time, "%Y,%m,%d,%H,%M,%S")
+    new_date = datetime.strptime(new_time, "%Y,%m,%d,%H,%M,%S")
+
+    diff = new_date - old_date # it gives you two deltas
+
+    if unit is 'min': # alternative is minutes.
+        return diff.seconds / 60
+    return diff.seconds # defaults to seconds
