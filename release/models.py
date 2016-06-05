@@ -59,6 +59,7 @@ class IP(Base):
     rule_id = Column(Integer(), ForeignKey("rules.id"), nullable=False)
     ip = Column(String(50))
     ipv4 = Column(Boolean(), default=True)
+    src = Column(Boolean(), default=True)
 
     def __repr__(self):
         return '<IP id:{0} [{1}] v4? {2} rule:{3}>'.format(self.id, self.ip, \

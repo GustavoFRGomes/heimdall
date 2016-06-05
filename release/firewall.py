@@ -36,6 +36,26 @@ class Firewall():
         counters = self.session.query(Counter).all()
         self.session.query(Counter).delete()
 
+    def addIp(self, rule, ip):
+        """
+            Method to add an IP address to a specific rule. It receives the
+            iptc.Rule and the IP address in as a models.IP instance.
+        """
+        if ip.src:
+            # Source address so
+            rule.src = ip.ip
+        else:
+            rule.dst = ip.ip
+
+    def addMac(self, rule, mac):
+        """
+            Method that adds a MAC address to a rule. Receives the iptc.Rule and
+            an instance of the models.MAC class.
+        """
+        match = iptc.Match(rule, 'mac')
+        match.mac_source = mac
+        rule.add_match(match)
+
     def ruleUpdate(self):
         rules = self.getFromDB()
         if not self.rules == rules:
