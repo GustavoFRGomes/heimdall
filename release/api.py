@@ -1,6 +1,5 @@
 from flask import Flask
 from flask.ext.restful import Api
-from flask.ext.httpauth import HTTPAuth # Check if it's this the name
 
 app = Flask(__name__)
 api = Api(app)
@@ -26,4 +25,4 @@ api.add_resource(CounterListResource, '/counters')
 
 if __name__ == '__main__':
     context = ('tls/heimdall.crt', 'tls/heimdall.key')
-    app.run(debug=True, ssl_context=context)
+    app.run(host='0.0.0.0', debug=True, ssl_context=context)
