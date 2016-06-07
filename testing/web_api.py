@@ -1,19 +1,41 @@
 import requests as req
+from requests.auth import HTTPBasicAuth
 import json
 
 uri = {
-    "rule": "http://127.0.0.1:5000/rule/",
-    "rules": 'http://127.0.0.1:5000/rules',
-    'counters': 'http://127.0.0.1:5000/counters',
-    'counter': 'http://127.0.0.1:5000/counter'
+    "rule": "https://127.0.0.1:5000/rule/",
+    "rules": 'https://127.0.0.1:5000/rules',
+    'counters': 'https://127.0.0.1:5000/counters',
+    'counter': 'https://127.0.0.1:5000/counter'
 }
 
-def getRule(rule_id):
+USERNAME = ''
+PASSWORD = ''
+VERIFY = False
+
+def cert_path(filename):
+    """
+        Defines path to the certificate file.
+    """
+    VERIFY = filename
+
+def set_username(username):
+    USERNAME = username
+
+def set_password(password):
+    PASSWORD = password
+
+def authenticator():
+    if not (USERNAME == '' and PASSWORD == ''):
+        return USERNAME, PASSWORD
+    return '', ''
+
+def getRule(rule_id, auth=True, https=True):
     """
         Get a Rule from a specific ID.
     """
     url = uri['rule'] + str(rule_id)
-    response = req.get(url)
+    response = req.get(url, auth=authenticator(), verify=VERIFY)
     # print(response)
     return response
 
@@ -22,7 +44,7 @@ def deleteRule(rule_id):
         Delete a Rule on the web server.
     """
     url = uri['rule'] + str(rule_id)
-    response = req.delete(url)
+    response = req.delete(url, auth=authenticator(), verify=VERIFY)
     # print(response)
     return response
 
@@ -40,7 +62,7 @@ def editRule(rule_id, port, action, protocol, ip=None, mac=None):
 
     msg = json.dumps(rule)
     url = uri['rule'] + str(rule_id)
-    response = req.put(url, json=msg)
+    response = req.put(url, json=msg, auth=authenticator(), verify=VERIFY)
     # print(response)
     return response
 
@@ -49,7 +71,7 @@ def listRules():
         Function to list all of the rules.
     """
     url = uri['rules']
-    response = req.get(url)
+    response = req.get(url, auth=authenticator(), verify=VERIFY)
     # print(response)
     return response
 
@@ -69,7 +91,7 @@ def postRule(port, action, protocol, ip=None, mac=None):
     msg = json.dumps(rule)
     print(msg)
     url = uri['rules']
-    response = req.post(url, msg)
+    response = req.post(url, msg, auth=authenticator(), verify=VERIFY)
     # print(response.text)
     return response
 
