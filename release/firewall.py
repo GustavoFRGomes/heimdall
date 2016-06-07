@@ -2,7 +2,8 @@ import iptc
 import time
 from time_aux import getTime # create a timestamp getter returns string
 from models import create_session
-from models import Rule, Counter
+from models import Rule, IP, MAC
+from models import Counter
 
 class Firewall():
 
