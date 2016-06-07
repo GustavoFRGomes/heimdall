@@ -4,42 +4,61 @@
 
 \section{Introduction}
 \label{chap3:sec:intro}
-This chapter will present the architecture chosen for the development of this
-system, as well as the tools used for the development of the various components,
-this chapter is meant to jsut give a general idea of the tools used not the
-specific uses.
+This chapter focuses on software engineering with section 3.2 being a brief
+requirement analysis for the system, followed a section describing the approach
+to the system architecture, and then section 3.4 will focus on introducing the
+tools that were leveraged in the implementation.
 
 \section{Brief Requirement Analysis}
 \label{chap3:sec:reqs}
 
-This requirements for this system are grouped by the follwoing order.
+This section will list both the function and non-functional requirements for the
+system.
 
-O trecho de código seguinte mostra a função \texttt{main()} e o seu funcionamento:
-\begin{lstlisting}[caption=Trecho de código usado no projeto.]
-#include <stdio.h>
+\subsection{Functional Requirements}
+\label{chap3:sec:reqs:func}
+The functional requirements for the system are comprised within the following
+list:
+\begin{enumerate}
+	\item The system shall allow the user to add rules to the gateway firewall;
+	\item The system shall allow the user to delete rules in the gateway
+		firewall;
+	\item The system shall allow the user to edit rules in the gateway's
+		firewall;
+	\item The system shall allow the user to list all the rules inside the
+		gateway's firewall;
+	\item The system shall allow the user to authenticate with the gateway
+		application;
+	\item The system shall allow the user to access the information of a rule in
+		the gateway's firewall;
+	\item The system shall allow the user to access all the packets that match a
+		rule in the gateway's firewall;
+	\item The system shall allow the user to access all the bytes that match a
+		rule in the gateway's firewall;
+	\item The system shall allow the user to add credentials on the gateway;
+	\item The system shall allow the user to delete all user credentials stored
+		in the gateway;
+	\item The system shall allow the user to get the amount of packets for a
+		specific rule;
+	\item The system shall allow the user to get the amount of bytes for a
+		specific rule;
+	\item The system shall allow the user to add a notifications email;
+	\item The system shall send traffic reports to the user's email;
+\end{enumerate}
 
-int main(){
-  int i = 0;
-  for(i = 0; i < 100; i++)
-    printf("%d\n",i);
-}
-\end{lstlisting}
-
-
-Se quiser definir a distribuição de Pareto, posso colocar a fórmula \emph{inline}, da seguinte forma $P(x)=\frac{x^{1/\Lambda}_{i}}{2}$, ou numa linha em separada, como se mostra a seguir:
-$$ y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).$$
-
-Outra maneira, mas numerada, é usar o ambiente \texttt{equation}, como se mostra na (\ref{eq:eq1}):
-\begin{equation}
- y^2 = \sum_{x=0}^{20}( x^3 - 2x + 3).
- \label{eq:eq1}
-\end{equation}
-
-\begin{align}
- 2+2+2+2+2+2+2+2+2+2+y^2 = & \sum_{x=0}^{20}( x^3 - 2x + 3);\\
-                         = & x^4 -2.
- \label{eq:eq2}
-\end{align}
+\subsection{Non-functional Requirements}
+\label{chap3:sec:reqs:non-func}
+\begin{enumerate}
+	\item The system shall be divided using a Client-Server architetcure;
+	\item The application shall only generate one database in the server-side;
+	\item The application shall only allow for user registration on the
+		server-side;
+	\item The server-side component shall be divided into independent
+		compontents;
+	\item The server-side system shall comprise a RESTful web service;
+	\item The server-side system shall comprise a Firewall service;
+	\item The server-side system shall have a Email service to notify the user;
+\end{enumerate}
 
 \section{Architecture}
 \label{chap3:sec:arch}
