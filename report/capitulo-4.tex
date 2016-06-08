@@ -165,7 +165,7 @@ The database is organized with the following schema:
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
-The Email Notification subsystem will act as a complement for the Android
+The Email Notification Subsystem will act as a complement for the Android
 application, which means that it will only send out notifications to the user if
 he isn't home. In order to detect the user, the Email Service queries the
 database to check when was the last time the user was making requests to the Web
@@ -180,6 +180,26 @@ notifications as well as the cycle periods, i.e., the time that needs to pass
 between notifications sent to the users email, lastly the user will also be
 asked to provide his first name in order for the system to address the user
 properly.
+
+The email being sent to the user is built using a template that is formatted
+according to JSON standards which makes it highly customizable if the user
+actually wants to modify some of the fields. The following code listing
+demonstrates a typical template, the default template provided within the
+installation files. During configuration, especially if the user uses the easy
+configuration scrip some of these fields will suffer changes, both the
+users\_email and the users\_name will be changed accordingly in this template
+file after configuration.
+
+The email service will also be in charge of creating the small reports that go
+in the reason field, which is the body of the email per se. This is all done
+automatically by the \emph{mixRuleCounters(. ,.)} which takes as parameters the
+rules and counters received from the database. The method will then iterate
+through all of the rules which have \emph{NOTIFY} or \emph{NOTIFY\_BLOCK} as
+actions and link them with the counters for those rules.
+
+Since the system needs to be clear for the user, all of the rules are explicitly
+converted into a more user friendly format and then they will be united with the
+values for the counters at a specific time.
 
 % put a small template of the email as a code listing.
 
