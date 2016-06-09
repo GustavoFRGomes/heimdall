@@ -61,11 +61,12 @@ class Firewall():
         rules = self.getFromDB()
         if not self.rules == rules:
             self.rules = rules
+            self.flushRules()
             self.resetCounters() # reset all the counters
             self.table.autocommit = False
             for rule in self.rules:
-                r = self.createRule(rule)
-                submitRule(r)
+                r = self.addRule(rule)
+                self.submitRule(r)
             self.table.commit()
             self.table.autocommit = True
             self.table.refresh()
@@ -124,6 +125,7 @@ class Firewall():
         while True:
             self.ruleUpdate()
             # self.counterUpdate()
+            print('Starting')
             time.sleep(30) # 30 secon wait
 
 if __name__ == '__main__':
