@@ -26,24 +26,16 @@ can be exchanged for others which could have better performance or efficiency.
 
 \section{Web Service Subsystem}
 \label{chap4:sec:web-sys}
-% divide it in Flask subsection and Android App subsection
-% The Web Service was done using the Flask micro-framework implemented in Python.
-% As already said in the previous chapter this framework allows for the use of
-% third-party extensions as the ones used to develop the web service API. These
-% extensions are:
-% \begin{enumerate}
-% 	\item Flask-RESTful
-% 	\item Flask-SQLAlchemy
-% \end{enumerate}
 
-% This system also can be divided into the Web Server and the Android Companion
-% application. These are made using a different technology stack, Python's Flask
-% and the Android Application, and because of this the communication between these
-% two systems need to deploy the same communication protocol and architecture.
-% This is accomplished by using the REST architecture. This is the
-The Web Service will be responsible for the communication between the user and
-the firewall and notification system. It is in the Web Service's API that all of
-the functionality needs to be defined.
+The Web Service is be responsible for all the communication between the user and
+the Raspberry Pi components. The web service will be all implemented making use
+of the \emph{Flask} framework allied with the \emph{flask-restful} extension
+that enables the declaration of resources to be accessed through the Hyper Text
+Transfer Protocol (HTTP) requests.
+
+In order to implement each resource we only need to create a class to represent
+each Uniform Resource Identifier (URI). These resources will need the methods
+for GET, POST, PUT and DELETE requests and these can be declared as method names
 
 These functionalities are as follows:
 \begin{enumerate}
@@ -85,7 +77,7 @@ headers that already come with the protocol specification:
 	\item POST
 	\item DELETE
 	\item PUT
-	\item AUTHENTICATE (check for the official name for the auth header)
+	% \item AUTHENTICATE (check for the official name for the auth header)
 \end{enumerate}
 
 The web service will communicate using JSON for data structuring enabling the
@@ -109,7 +101,9 @@ The API for this RESTful web service is as follows:
 	\item "/counters" -- also only accessible through GET requests and sends the
 		list of every counter for every rule in place, with their respective
 		packets and number of bytes.
-% \begin{lstlisting}[caption=Trecho de código usado no projeto.]
+\end{enumerate}
+
+% TALK ABOUT THE FIELDS OF THE flask-restful
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
@@ -208,6 +202,20 @@ JSON formatted file named, \emph{email.json}. The Email Service will compose the
 email for the user based on this template changing the various fields according
 to the information that the user gave during initial configuration.
 
+\begin{lstlisting}[caption=Example of the email JSON template.]
+{
+    "email": {
+        "users\_name": "Gustavo Gomes",
+        "sign": "Sent From Heimdall Secure Gateway.",
+        "goodbye": "Thank you for your attention,",
+        "subject": "Notification From Heimdall Secure Gateway",
+        "reason": "Testing this email thingie",
+        "email\_to": "gustaafewf",
+        "greeting": "Hello there Mr/Mrs"
+    }
+}
+\end{lstlisting}
+
 A problem found with this feature was that the email system globally has become
 much more secure and it is impossible to send an email without an Email Provider
 which will also imply that the user would need to purchase or get a domain name
@@ -247,18 +255,51 @@ and the password of that account.
 
 \section{Firewall Interface Subsystem}
 \label{chap4:sec:firewall-sys}
-The Firewall Interface subsystem is responsible for the management of the rules
-within the gateway's firewall. The goal of this subsystem is to make the process
-of building the rule set for the firewall more dynamic in order to cope with
-different needs for the end-user. The firewall system itself is \emph{iptables}
-which was discussed in the previous chapter, under the \emph{Tools} section,
-this is all implemented using a Python class that will interact with the
-database, to get the rules, and the iptables, to apply them.
+The Firewall Subsystem is the one component responsible for the management and
+deployment of rules inside the firewall, iptables. The only concern for this
+system is to deploy the rules from the database and the accounting for the
+network traffic of those same rules. First we will talk about the
+\emph{python-iptables}, or \emph{iptc} package, which enables the direct
+interaction between this system and the firewall system, which was described in
+a previous chapter, the \emph{iptables}. Then a description of the class that
+manipulates and handles both the rules and their corresponding counters is
+described as well as the processes involved with the data retrieval from the DB
+and conversion.
 
-This subsystem also makes use of a thrid-party library called
-\emph{python-iptables} which bridges the firewall system with the project's
-Firewall Interface. By using this library it is possible to change rules and
-even organize them dynamically.
+\subsection{python-iptables}
+\label{chap4:sec:firewall-sys:iptc}
+The \emph{python-iptables} is a third party package that can be found in the
+Python Package Index (PyPI), and is provides a direct link to the
+\emph{iptables} firewall system. This is acomplished because this module is a
+Python wrapper around the \eph{libiptc} which is a C library that provides the
+programming interface for the \emph{iptables}.
+
+Some of the features of this module is the capability to connect to any single
+one of the tables already provided by the \emph{iptables} as well as any chain
+within those tables. As said previously, \emph{iptables} groups the rules within
+chains which are also grouped inside different tables.
+
+This module enables the connection to any given table and chain and the direct
+manipulation of the rules within it. The rules can be deleted and added as  well
+as modified without ever needing to restart the firewall system. The rules
+temselves are also able to be modified to have all the same level of detail as
+they have when declared inside the \emph{iptables}, which may include:
+\begin{enumerate}
+	\item Target declaration;
+	\item Protocol definition;
+	\item Port speficication;
+	\item IP filtering, which includes IP ranges;
+	\item MAC address filtering;
+	\item Pattern matching.
+\end{enumerate}
+
+For the context of the project described within this document only the first
+five functions are used, with special attention to the IP filtering which won't
+involve any IP ranges, all the other functionalities mentioned are used.
+
+These functionalities will be talked about during the next section where we will
+describe the class created, which the primary goal is to convert and update the
+set of rules according to the ones specified in the database.
 
 \subsection{Firewall Class}
 \label{chap4:sec:firewall-sys:firewall-class}
@@ -313,49 +354,6 @@ accomplished using the \emph{iptables} system, present in most Linux
 distributions as the default firewall system, and there is also a firewall
 handling system that is responsible for acquiring the rules, defined by the
 user, from the database and deploying them on the firewall system.
-
-\subsection{iptables}
-\label{chap4:sec:firewall-sys:sub:iptables}
-The iptables is an application program that allows for the configuration of the
-Linux kernel firewall, which uses the Netfilter framework. This application,
-provided in most Linux distributions, is an interface that enables users to
-set up, maintain and inspect the tables of IP packet filtering rules within the
-Linux kernel.
-
-It is a widely used and very flexible system used by system administrators that
-need to enforce certain security policies on a single system or network. There
-are two versions of this software, one for IPv4 and another one for IPv6, the
-latter being named iptables6.
-
-\subsection{python-iptables}
-\label{chap4:sec:firewall-sys:sub:iptc}
-The \emph{python-iptables} is a package that makes the interface between
-iptables and Python scripts. By using this package we could create the firewall
-handling class that will interact with the Linux kernel firewall and employ the
-rules using the Python language.
-This Python package makes the process of deploying rules to the firewall easier
-as well as the addition of new rule chains for the filtering within the tables.
-
-The Firewall class does just that, querying all of the rules inside the
-database, looking for optional source and destination IP addresses for any given
-rule and implementing the pretended actions.
-The main cycle of the class is the \emph{run()} method that will perform the
-following task within an infinite loop:
-
-\begin{enumerate}
-	\item Get a list of rules from the DB;
-	\item Flush the rules within the iptables ruleset;
-	\item Insert the new rules;
-	\item Wait for the refresh time to pass and start again.
-\end{enumerate}
-
-Some optimizations are also present, for example there is a match made by the
-system in order to check if the ruleset from the DB is the same of the previous
-iteration, or disabling the autocommit for each rule in order to deploy the
-entire ruleset right after flushing instead of flushing the entire ruleset and
-adding a rule at a time.
-
-% Add the Firewall().run() method here!
 
 \section{Conclusions}
 \label{chap4:sec:concs}
