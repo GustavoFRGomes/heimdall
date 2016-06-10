@@ -1,4 +1,4 @@
-\chapter{System Architecture}
+\chapter{System Architecture and Requirement Analysis}
 % Os titulos dados aos capítulos são meros exemplos. Cada relatório deve adequar-se ao projeto desenvolvido.
 \label{chap:sys-arch}
 
@@ -57,28 +57,44 @@ list:
 		compontents;
 	\item The server-side system shall comprise a RESTful web service;
 	\item The server-side system shall comprise a Firewall service;
-	\item The server-side system shall have a Email service to notify the user;
+	\item The server-side system shall have an Email service to notify the user;
 \end{enumerate}
 
 \section{Architecture}
 \label{chap3:sec:arch}
 % Diagrama de Componentes
-The system itself is all on the Raspberry Pi and the Android application is only
-the interface that will enable the end-user interact with the firewall and also
-receive notifications once the user is connected inside the network.
+For this system there are two types of architecture being used, one is the
+typical client-server architecture because it has the Android Companion
+Application as the client and the system with which the application will
+interact running on the Raspberry Pi, which is the server-side of the whole
+system.
 
-The components present on the Raspberry Pi are as follows:
+The server-side architecture was inspired by the
+Microservices architecture being adopted in the Web Development are, which state
+that a system should be divided into services that are independent from each
+other in terms of execution and that each one of these services should only do
+one single task or deal with one single component. This is reflected in the way
+the server-side system was built being "database centric", i.e. each component
+will interact solely with the database and not with each other preventing
+concurrency issues upfront. The Raspberry Pi will then have the following
+subsystems:
 \begin{enumerate}
-	\item SQLite Database
-	\item Web Service API
-	\item Firewall Handler
-	\item Email Notifier
+	\item Database;
+	\item Web Service;
+	\item Email Notifaction;
+	\item Firewall Interface.
 \end{enumerate}
 
-In the next chapter we will go into more details on these system and how they
-all interact with each other. For now we can say that the Database play the
-center role because everything needs to interact with it, either to get new
-notifications, register flagged occurences or to interact with the web service.
+This architecture desing also enables the interchangeability of the server-side
+components actually making it possible to implement alternatives for each of the
+components and making them run without comprimising any of the other subsystem,
+which makes it possible for the user or another developer to swap, for example,
+the Email Notification with a Short Messaging Service (SMS) notification system
+or the Firewall Interface with a new system that he or she implemented.
+
+These distinct subsystems will be described in the next chapter, alongside the
+description of the Android application.
+
 % say database-centric?
 
 \section{Tools}
