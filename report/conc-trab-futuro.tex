@@ -6,31 +6,79 @@
 
 % Esta secção contém a resposta à questão: \\
 % \emph{Quais foram as conclusões princípais a que o(a) aluno(a) chegou no fim deste trabalho?}
+This project consisted on the development of a software solution that enables
+the user to configure and manage the rules within the database. This was
+accomplished by having a Raspberry Pi running a set of different services that
+update the firewall rules, perform notifications through email and also accept
+requests to interact with the system.
+
+Altough the system is inteded to be easy to use even for layman, there is still
+some improvements to be made, especially because the user must know which IP
+and/or MAC address is allocated to the specific device the user wants to block
+or flag. This will be discussed in the next section of this chapter.
+
+Another functionality that couldn't be implemented was the conversion of
+unsecure connections to anonymous connections through the Tor network but
+unfortunately there was no time and especially it was something that needed the
+Raspberry Pi to become much more similar to a network router instead of a simple
+gateway because it would need to anonymize and maintain the connection status
+for each and every connection from within the domestic network and the Internet.
+This topic will also be discussed in the section 6.1.
 
 \section{Future Work}
 \label{sec:future-work}
 
+Altough just one goal from the start of this project wasn't achieved there could
+also be some implementation improvements and some optimizations and a redesign
+of the Android companion application.
+
+First and foremost the Tor anonymization of unsecure connections needs to be
+made in the next iteration but maybe as a solo project that could work outside
+the scope of the system described in this document. This would help improve the
+overall security especially in terms of the interception of traffic by malicious
+agents.
+
+Another improvement much needed in this system is the Android application which
+lacks a intuitive User Interface (UI) that will enable even the non-technical
+users to work and interact with the system.
+
+We also can't expect the user to
+know and have working knowledge about Internet Protocol (IP) and
+Machine Authentication Code (MAC) addresses so there needs to also be a
+mechanism of identification for each device connected to the domestic network.
+This is actually on plan for the next iteration of the project because the aim
+is to make it a solution accessible to anyone, in terms of technicall skills
+required.
+
+Something that could also be done and make the system itself more valuable would
+be the filtering and detection of IPv6 rules, for now the database already has
+an attribute that represents if the IP is IPv4 ou IPv6 and also the validation
+for IPv6 addresses is also already implemented. The main reason why this isn't
+implemented is that the domestic network will be configured with the \emph{dhcp}
+application and a IPv4 private network and IP range is the configured instead of
+letting the user decide between that and the newer IPv6 range.
+
 % Expansion into full firewall capabilities for incoming traffic as well
-The main desire of the system could be expanded to work as a firewall for both
-incoming and outgoing communications instead of being just for the outgoing
-traffic. This would increase security even though the domestic router also
-handles the firewall duties for incoming traffic, but this system could help
-with further security and filtering ouside from not letting any incoming traffic
-that wasn't requested by a device inside the Local Area Network.
+% The main desire of the system could be expanded to work as a firewall for both
+% incoming and outgoing communications instead of being just for the outgoing
+% traffic. This would increase security even though the domestic router also
+% handles the firewall duties for incoming traffic, but this system could help
+% with further security and filtering ouside from not letting any incoming traffic
+% that wasn't requested by a device inside the Local Area Network.
 
-This system could also have an Intrusion Detection System for both the incoming
-and outgoing traffic but also for the inner traffic, this would prevent the
-infection of devices inside the Local Area Network minimazing the risk of worm
-spreading all across the entire domestic network. The IDS system could also
-enable to identify possible "zombie" devices inside the network by analyzing
-patterns in the traffic and notifying the user for those anomalies.
+% This system could also have an Intrusion Detection System for both the incoming
+% and outgoing traffic but also for the inner traffic, this would prevent the
+% infection of devices inside the Local Area Network minimazing the risk of worm
+% spreading all across the entire domestic network. The IDS system could also
+% enable to identify possible "zombie" devices inside the network by analyzing
+% patterns in the traffic and notifying the user for those anomalies.
 
-One more feature that will be developed is the implementation of a firewall
-software, instead of using a third party system, with the intention of making
-the system more efficient for the Raspberry Pi which is not very powerful both
-in terms of memory and processing power. It would also be interesting to test
-the system in the newer Raspberry Pi 3 which as a better processor and compare
-the results.
+% One more feature that will be developed is the implementation of a firewall
+% software, instead of using a third party system, with the intention of making
+% the system more efficient for the Raspberry Pi which is not very powerful both
+% in terms of memory and processing power. It would also be interesting to test
+% the system in the newer Raspberry Pi 3 which as a better processor and compare
+% the results.
 % Talk about making an IDS system for intranetwork malware detection, it could
 % be a way to stop malware from spreading to some of the connected devices, talk
 % about detection of information extraction system, implementing our own
@@ -39,19 +87,19 @@ the results.
 % Coming up with ways to identify every device that is connected, and blocking
 % access to a particular host on the Internet as well as any communications
 % coming from IoT devices for some reason, having DNS lookup before.
-Another feature that is pretended to be implemented in the future is a system
-for the detection of devices to aid in the detection and identification of
-possible unkown devices that are connected to the domestic network. It could
-also help identify all the IoT devices in the network to compose individual
-reports on those same devices.
+% Another feature that is pretended to be implemented in the future is a system
+% for the detection of devices to aid in the detection and identification of
+% possible unkown devices that are connected to the domestic network. It could
+% also help identify all the IoT devices in the network to compose individual
+% reports on those same devices.
 
 % The email notifications could be done using an outside server ran by me and
 % the connection could be made from the Raspberry Pi into the server for email
 % notifications on the fly.
-Lastly the email notification system could be done using an outside service, one
-which could be accessed in order to send the emails to the user from an
-authentic email server without needing to provide credentials for a known STMP
-server as it is done currently.
+% Lastly the email notification system could be done using an outside service, one
+% which could be accessed in order to send the emails to the user from an
+% authentic email server without needing to provide credentials for a known STMP
+% server as it is done currently.
 
 % Esta secção responde a questões como:\\
 % \emph{O que é que ficou por fazer, e porque?}\\
