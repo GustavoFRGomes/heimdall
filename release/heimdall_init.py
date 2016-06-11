@@ -2,6 +2,13 @@ from getpass import getpass
 from user_handler import addUser
 import json
 
+from firewall import Firewall
+from email_service import Email
+from api import app
+
+import os
+from multiprocessing import Process
+
 def add_user():
     print('Can you please tell us your name?')
     name = input('Name: ')
@@ -45,4 +52,24 @@ def prompt_user():
         json.dump(email_json, f, indent=4)
 
     with open('heimdall.conf', 'w+') as f:
-        json.dump(config_data, f, indent(4)
+        json.dump(config_data, f, indent=4)
+
+def run():
+    if not (os.path.isfile('./heimdall.conf')):
+        prompt_user()
+    f = open('./heimdall.conf')
+    config = json.loads(f.read())
+
+    print(config)
+    firewall = Firewall(chain='FORWARD')
+    email = Email(config['mail_username'], config['mail_password'])
+    p_firewall = Process(target=firewall.run, \
+            args=(config['firewall_cycle'],))
+    p_email = Process(target=email.run, args=(config['email_cycle'],))
+    p_firewall.start()
+    p_email.start()
+    os.system('python api.py')
+
+if __name__ == '__main__':
+    # prompt_user()
+    run()
