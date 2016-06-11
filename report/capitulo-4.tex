@@ -355,6 +355,46 @@ distributions as the default firewall system, and there is also a firewall
 handling system that is responsible for acquiring the rules, defined by the
 user, from the database and deploying them on the firewall system.
 
+\section{Android Companion App}
+\label{chap4:sec:android}
+In order to make it a complete system an Android mobile application was
+conceived that mostly allows the user to interact with the Web Service's API.
+The requests to the web service are made using the Volley as well as the
+HTTPClient, since the Web Service only provides the API via HTTPS and with
+authentication, the HTTPClient is required to handle the self-signed certificate
+provided with the application as well as take care for the HTTPBasic
+authentication headers.
+
+As already said when describing the Web Service all of the data transmitted over
+the network needs to be in the JSON format in order to provide a standard way of
+communicating with all the client devices.
+
+The aplication will irst ask the user to provide the authentication credentials
+as well as the gateway's IP address.
+
+% insert the authentication print
+
+There are some classes defined to help structure all of the data and to allow
+for some organization and manipulation of the data that can be received by the
+Web Service. These classes are the Rule, Ip and Mac classes.
+
+The activities that are provided by the application are presented in the
+following list:
+\begin{enumerate}
+	\item AddRule -- Activity to append a rule at the end of the rule set on the
+		server, uses the POST request;
+	\item EditRule -- Used to edit a rule that is already implemented, making
+		use of the PUT request method.
+	\item DeleteRule -- Small activity that handles the DELETE request for a
+		specific rule;
+	\item ListRules -- Activity to list and access all of the rules that are in
+		the system.
+\end{enumerate}
+
+All of these activities make use of the \emph{JSONObject} data type enabling
+both the interpretation and the creation of the data structures to be sent over
+the network into and from the Web Service, running on the Raspberry Pi.
+
 \section{Conclusions}
 \label{chap4:sec:concs}
 This chapter described all of the subsystems that comprise the project. We
