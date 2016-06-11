@@ -96,10 +96,17 @@ class RuleResource(Resource):
         return rule
 
     def delete(self, id):
+        print('DELETE Called!')
         rule = session.query(Rule).filter(Rule.id == id).first()
         if not rule:
             abort(404, message="Can't find {0} in the DB.".format(id))
         session.begin()
+        print(rule.ip)
+        print(rule.mac)
+        if not (rule.ip == None):
+            session.delete(rule.ip)
+        if not (rule.mac == None):
+            session.delete(rule.mac)
         session.delete(rule)
         session.commit()
         # return 'Removed Successful', 200
@@ -119,9 +126,9 @@ class RuleResource(Resource):
 
         # Check if ip and mac is passed and created by these things.
         if ip:
-            rule.ip = IP(ip['ip'], ip['ipv4'])
+            rule.ip = IP(ip=ip['ip'], ipv4=ip['ipv4'], src=ip['src'])
         if mac:
-            rule.mac = MAC(mac['mac'])
+            rule.mac = MAC(mac=mac['mac'])
 
         # session.add(rule)
         session.commit()
