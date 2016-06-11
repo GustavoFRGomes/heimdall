@@ -11,12 +11,15 @@ from flask.ext.restful import fields
 from flask.ext.restful import marshal_with
 from flask.ext.restful import Resource
 
+from validate import validIpv4, validMac
+
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from time_aux import getTime # create a timestamp getter returns string
 
 ip_fields = {
         'ip': fields.String,
         'ipv4': fields.Boolean,
+        'src': fields.Boolean,
 }
 
 mac_fields = {
@@ -28,8 +31,8 @@ rule_fields = {
         'port': fields.String,
         'protocol': fields.String,
         'action': fields.String,
-        'ip': ip_fields,
-        'mac': mac_fields,
+        'ip': fields.Nested(ip_fields),
+        'mac': fields.Nested(mac_fields),
 }
 
 counter_fields = {
@@ -176,11 +179,19 @@ class RuleListResource(Resource):
 
         # Check if ip and mac is passed and created by these things.
         if ip:
+            if not validIpv4(ip['ip']):
+                abort(401, 'Invalid IPv4 address!')
             new_ip = IP()
             new_ip.ip = ip['ip']
             new_ip.ipv4 = ip['ipv4']
+            new_ip.src = ip['src']
+            new_ip.rule_id = rule.id
+            print(new_ip)
+            print(rule)
             rule.ip = new_ip
         if mac:
+            if not validMac(mac['mac']):
+                abort(401, 'Invalid MAC address!')
             rule.mac = MAC()
             rule.mac.mac = mac['mac']
 
