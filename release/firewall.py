@@ -108,9 +108,12 @@ class Firewall():
         rules = self.getFromDB()
         # check for mismatch between counters and rules.
         for index in range(len(rules)):
+            # print('REsultados')
+            # print(results[index])
             pair = results[index]
             counter = Counter(rule_id=rules[index].id, timestamp=getTime(), \
                     packets=pair[0], byte=pair[1])
+            # print(counter.rule_id, counter.timestamp, counter.packets)
             self.session.add(counter)
 
     def counterUpdate(self):
@@ -121,13 +124,13 @@ class Firewall():
             # print(results[-1])
         self.counterDB(results)
 
-    def run(self, rest_time=30):
+    def run(self, cycle):
         while True:
             self.ruleUpdate()
-            # self.counterUpdate()
-            print('Starting')
-            time.sleep(30) # 30 secon wait
+            self.counterUpdate()
+            # print('Starting')
+            time.sleep(cycle) # 30 secon wait
 
 if __name__ == '__main__':
     firewall = Firewall()
-    firewall.run(rest_time=30)
+    firewall.run(30)
