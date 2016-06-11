@@ -84,17 +84,15 @@ class Email():
 
     def run(self, cycle):
         # cycle defaults to 3 hours.
-        sleep_hours = cycle*60*60 # convert hours to mins to secs
+        cycle = cycle*60*60 # convert hours to mins to secs
         while True:
             self.queryDB()
-            # print('RULES')
-            # print(self.rules)
-            # maybe avoid the spam whenver the report doesn't have data
-            # if not (len(self.rules) == 0):
             report = self.makeReport()
-            # print(report)
-            self.send(report)
+            # self.send(report)
+            print(report)
+            print(getTime())
             last_login_time = self.userTime()
+            print(last_login_time)
             if last_login_time == None or last_login_time > cycle:
                 time.sleep(cycle)
             else:
