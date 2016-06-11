@@ -10,6 +10,8 @@ from api_resources import CounterResource
 from api_resources import RuleListResource
 from api_resources import CounterListResource
 
+context = ('tls/heimdall.crt', 'tls/heimdall.key')
+
 """
 API description and mapping:
     Rule receives an ID and is used in GET, DELETE and PUT requests.
@@ -24,5 +26,4 @@ api.add_resource(RuleListResource, '/rules')
 api.add_resource(CounterListResource, '/counters')
 
 if __name__ == '__main__':
-    context = ('tls/heimdall.crt', 'tls/heimdall.key')
     app.run(host='0.0.0.0', debug=True, ssl_context=context)
