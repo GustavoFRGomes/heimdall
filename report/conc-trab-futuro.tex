@@ -6,11 +6,13 @@
 
 % Esta secção contém a resposta à questão: \\
 % \emph{Quais foram as conclusões princípais a que o(a) aluno(a) chegou no fim deste trabalho?}
-This project consisted on the development of a software solution that enables
-the user to configure and manage the rules within the database. This was
-accomplished by having a Raspberry Pi running a set of different services that
-update the firewall rules, perform notifications through email and also accept
-requests to interact with the system.
+This project consisted inthe development of a software slution that allows the
+final user to configure and manage the firewall rules on the firewall of the
+domestic network. This is achieved with teh use of a Raspberry Pi running a set
+of services that allow for the configuration of the firewall rules as well as
+the communication with interfacing devices with it's web service and also the
+notification center which sends out email reports of the traffic within the
+user's domestic network.
 
 Altough the system is inteded to be easy to use even for layman, there is still
 some improvements to be made, especially because the user must know which IP
@@ -23,40 +25,40 @@ unfortunately there was no time and especially it was something that needed the
 Raspberry Pi to become much more similar to a network router instead of a simple
 gateway because it would need to anonymize and maintain the connection status
 for each and every connection from within the domestic network and the Internet.
-This topic will also be discussed in the section 6.1.
+This topic will also be discussed in the section 6.2.
 
 \section{Future Work}
 \label{sec:future-work}
 
-Altough just one goal from the start of this project wasn't achieved there could
-also be some implementation improvements and some optimizations and a redesign
-of the Android companion application.
+Unfortunately the anonymization through the Tor network couldn't be accomplished
+mostly because it would need a redesign of the system and more control over the
+network's trafic. It is planned to be a feature of the next iteration of the
+project, mostly because it is important to give the user a way of preventing
+interception of unsecure traffic from devices like the smart "things" that will
+comprise the Internet of Things (IoT).
 
-First and foremost the Tor anonymization of unsecure connections needs to be
-made in the next iteration but maybe as a solo project that could work outside
-the scope of the system described in this document. This would help improve the
-overall security especially in terms of the interception of traffic by malicious
-agents.
+Another aspect that needs some revision and a redesign is the Android
+application, even though the system doesn't require the exclusive use of the
+Android application, most users could still make use of it. This makes it vital
+to have a User Interface more intuitive and easy to use even for the
+non-technical user.
 
-Another improvement much needed in this system is the Android application which
-lacks a intuitive User Interface (UI) that will enable even the non-technical
-users to work and interact with the system.
+One more problem that can be solved with more time is the identification and
+mapping of the devices connected to the domestic network. This would make it
+possible to simply list these devices to the user and he or she would only need
+to select the one they wanted to monitor more closely. This is currently done by
+allowing the user to specify the Internet Protocol (IP) and/or Machine
+Authentication Code (MAC) addresses which isn't suitable for every user because
+they would need to identify by themselves these addresses and then add the rule.
+The development of the identification and monitoring system needs to integrate
+the solution in order to abstract all the technical skill required to operate
+the system as it is.
 
-We also can't expect the user to
-know and have working knowledge about Internet Protocol (IP) and
-Machine Authentication Code (MAC) addresses so there needs to also be a
-mechanism of identification for each device connected to the domestic network.
-This is actually on plan for the next iteration of the project because the aim
-is to make it a solution accessible to anyone, in terms of technicall skills
-required.
-
-Something that could also be done and make the system itself more valuable would
-be the filtering and detection of IPv6 rules, for now the database already has
-an attribute that represents if the IP is IPv4 ou IPv6 and also the validation
-for IPv6 addresses is also already implemented. The main reason why this isn't
-implemented is that the domestic network will be configured with the \emph{dhcp}
-application and a IPv4 private network and IP range is the configured instead of
-letting the user decide between that and the newer IPv6 range.
+Another improvement that isn't vital but could also be a good feature to have
+in the future, would be the rule interface for IPv6 addresses. This wasn't
+already accomplished due to time constraints and also because of the Dynamic
+Host Configuration Protocol (DHCP) configuration is limited to the attribution
+of IPv4 addresses to the devices that connect to the network.
 
 % Expansion into full firewall capabilities for incoming traffic as well
 % The main desire of the system could be expanded to work as a firewall for both
