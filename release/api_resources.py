@@ -194,7 +194,7 @@ class RuleListResource(Resource):
         # Check if ip and mac is passed and created by these things.
         if ip:
             if not validIpv4(ip['ip']):
-                abort(401, 'Invalid IPv4 address!')
+                abort(401, message='Invalid IPv4 address!')
             new_ip = IP()
             new_ip.ip = ip['ip']
             new_ip.ipv4 = ip['ipv4']
@@ -205,7 +205,7 @@ class RuleListResource(Resource):
             rule.ip = new_ip
         if mac:
             if not validMac(mac['mac']):
-                abort(401, 'Invalid MAC address!')
+                abort(401, message='Invalid MAC address!')
             rule.mac = MAC()
             rule.mac.mac = mac['mac']
 
