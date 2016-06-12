@@ -16,6 +16,8 @@ from validate import validIpv4, validMac
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from time_aux import getTime # create a timestamp getter returns string
 
+import json
+
 ip_fields = {
         'ip': fields.String,
         'ipv4': fields.Boolean,
@@ -87,6 +89,9 @@ class RuleResource(Resource):
         self.reqparser.add_argument('action')
         self.reqparser.add_argument('ip')
         self.reqparser.add_argument('mac')
+
+        self.session = create_session()
+
         super(RuleResource, self).__init__()
 
     @marshal_with(rule_fields)
@@ -118,21 +123,32 @@ class RuleResource(Resource):
             abort(404, message="Can't find {0} in the DB.".format(id))
         # args = self.reqparser.parse_args()
         args = request.get_json(force=True)
-        rule.protocol = args['protocol']
-        rule.port = args['port']
-        rule.action = args['action']
+        print(args)
+        print(json.loads(args))
+        args = json.loads(args)
+        # print(args.keys())
+        session.begin()
+        setattr(rule, 'protocol', args['protocol'])
+        setattr(rule, 'port', args['port'])
+        setattr(rule, 'action', args['action'])
 
         ip = args.get('ip', None)
         mac = args.get('mac', None)
-
         # Check if ip and mac is passed and created by these things.
         if ip:
-            rule.ip = IP(ip=ip['ip'], ipv4=ip['ipv4'], src=ip['src'])
+            setattr(rule, 'ip', IP(ip=ip['ip'], ipv4=ip['ipv4'], src=ip['src']))
         if mac:
-            rule.mac = MAC(mac=mac['mac'])
-
+            setattr(rule, 'mac', MAC(mac=mac['mac']))
+            # rule.mac = MAC(mac=mac['mac'])
         # session.add(rule)
-        session.commit()
+        try:
+            session.commit()
+        except:
+            session.rollback()
+            print("Rollback needed")
+            return "Unable to insert that rule, check passed params", 500
+
+
         # return 'Edit Successful', 200
 
 class CounterResource(Resource):
@@ -183,6 +199,9 @@ class RuleListResource(Resource):
     def post(self):
         # args = self.reqparser.parse_args()
         args = request.get_json(force=True)
+
+        print(args)
+
         rule = Rule()
         rule.protocol = args['protocol']
         rule.port = str(args['port'])
@@ -209,12 +228,14 @@ class RuleListResource(Resource):
             rule.mac = MAC()
             rule.mac.mac = mac['mac']
 
+
         session.begin()
         session.add(rule)
         try:
             session.commit()
         except IntegrityError:
             session.rollback()
+            print("Rollback needed")
             return "Unable to insert that rule, check passed params", 500
 
 
