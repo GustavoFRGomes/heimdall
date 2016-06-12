@@ -269,37 +269,28 @@ and conversion.
 \subsection{python-iptables}
 \label{chap4:sec:firewall-sys:iptc}
 The \emph{python-iptables} is a third party package that can be found in the
-Python Package Index (PyPI), and is provides a direct link to the
-\emph{iptables} firewall system. This is acomplished because this module is a
-Python wrapper around the \eph{libiptc} which is a C library that provides the
-programming interface for the \emph{iptables}.
+Python Package Index (PyPI), it provides a direct interface with the
+\emph{iptables} firewall system. This is mostly due to the fact that it is a
+Python wrapper for the \eph{libiptc} which, in turn is a C library that
+provides a programming interface to the \emph{iptables}.
 
-Some of the features of this module is the capability to connect to any single
-one of the tables already provided by the \emph{iptables} as well as any chain
-within those tables. As said previously, \emph{iptables} groups the rules within
-chains which are also grouped inside different tables.
-
-This module enables the connection to any given table and chain and the direct
-manipulation of the rules within it. The rules can be deleted and added as  well
-as modified without ever needing to restart the firewall system. The rules
-temselves are also able to be modified to have all the same level of detail as
-they have when declared inside the \emph{iptables}, which may include:
+This module allows the access to any of the tables, chains and rules within the
+\emph{iptables} system, as well as the addition of new rules to the system and
+also the manipulation of existing ones. This means that it is possible to
+dynnamically manipulate the rules inside the \emph{iptables} system in any way
+the developer might require.
+Some of the main functionalities that are provided by this module as well as
+used in the context of this project are:
 \begin{enumerate}
 	\item Target declaration;
 	\item Protocol definition;
 	\item Port speficication;
 	\item IP filtering, which includes IP ranges;
 	\item MAC address filtering;
-	\item Pattern matching.
+	% \item Pattern matching.
 \end{enumerate}
 
-For the context of the project described within this document only the first
-five functions are used, with special attention to the IP filtering which won't
-involve any IP ranges, all the other functionalities mentioned are used.
-
-These functionalities will be talked about during the next section where we will
-describe the class created, which the primary goal is to convert and update the
-set of rules according to the ones specified in the database.
+The way these functionalities will be used is covered in the next chapter.
 
 \subsection{Firewall Class}
 \label{chap4:sec:firewall-sys:firewall-class}
@@ -389,11 +380,18 @@ following list:
 		specific rule;
 	\item ListRules -- Activity to list and access all of the rules that are in
 		the system.
+	\item Login -- First activity to be launched providing the user with a way
+		to input both the credentials for authentication in the Web Service as
+		well as the IP and Port number of the gateway.
+	\item MainMenu -- This activity is just a simple menu to enable the user to
+		interact with all of the functionalities proviced by the application.
 \end{enumerate}
 
-All of these activities make use of the \emph{JSONObject} data type enabling
-both the interpretation and the creation of the data structures to be sent over
-the network into and from the Web Service, running on the Raspberry Pi.
+Almost all of the activities make use of the Volley package, described in
+Chapter 2, for the communication between the Web Service and the application.
+The application composes Hyper Text Tranfer Protocol (HTTP) requests to be sent
+to the Web Server as well as JSONObject or JSONArray objects to send and parse
+information received from the Web Service, running on the gateway device.
 
 \section{Conclusions}
 \label{chap4:sec:concs}
