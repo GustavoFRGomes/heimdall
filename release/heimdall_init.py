@@ -40,7 +40,7 @@ def prompt_user():
 
     config_data['name'] = name
     config_data['email'] = email
-    config_data['email_cycle'] = int(email_cycle)
+    config_data['email_cycle'] = float(email_cycle)
     config_data['firewall_cycle'] = int(fwl_cycle)
 
     addUser(username, password)
