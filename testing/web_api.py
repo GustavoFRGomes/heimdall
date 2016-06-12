@@ -52,13 +52,16 @@ def editRule(rule_id, port, action, protocol, ip=None, mac=None):
     """
         Edit a Rule at the web service.
     """
+    rule = {}
     rule['port'] = port
     rule['protocol'] = protocol
     rule['action'] = action
-    if not ip:
+    if not ip == None:
         rule['ip'] = ip
-    if not mac:
+    if not mac == None:
         rule['mac'] = mac
+
+    print(rule)
 
     msg = json.dumps(rule)
     url = uri['rule'] + str(rule_id)
