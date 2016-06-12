@@ -85,7 +85,7 @@ subsystems:
 	\item Firewall Interface.
 \end{enumerate}
 
-This architecture desing also enables the interchangeability of the server-side
+This architecture design also enables the interchangeability of the server-side
 components actually making it possible to implement alternatives for each of the
 components and making them run without comprimising any of the other subsystem,
 which makes it possible for the user or another developer to swap, for example,
@@ -95,7 +95,8 @@ or the Firewall Interface with a new system that he or she implemented.
 These distinct subsystems will be described in the next chapter, alongside the
 description of the Android application.
 
-% say database-centric?
+% \subsection{Web Service}
+% \label{chao3:sec:arch:web_service}
 
 \section{Tools}
 \label{chap3:sec:tools}
@@ -105,50 +106,63 @@ also on the Android
 
 \subsection{Volley}
 \label{chap3:sec:tools:sub:volley}
-The Volley package is present in the standard library of Android it is
-compatible with the first Android versions of the Operating System, and it helps
-the developer to implement a queue of HTTP requests for various URL defined
-resources.
+Volley is a Java package devoloped by a team at Google Inc. with the intention
+of creating asynchronous requests for network resources. It is focused on making
+the efforts for Hyper Text Transfer Protocol (HTTP) requests much more feasable
+within the Android Operation System. Since Android recommends that developers
+avoid overloading the main thread of execution this packageprovides a simple
+interface that enables the developers to simply declare a RequestQueue, which is
+carried out on a separate thread, to handle the requests asynchronously.
 
-This is a great tool for the development of web service consumers, making the
-process of sending and receiving requests and responses with both text strings
-or with JSON content. This package also helps the developer handle error
-messages that might be received as a response from the web service.
+In the context of this project the communication between the system running on
+the Raspberry Pi and the mobile application is assured through the Web Service,
+the Volley package was fulcral for the development of the mobile application
+which relies heavily on requests from and to the network gateway, running on the
+Raspberry Pi.
+
+The Volley package also provides a easy way to handle JavaScrip Object Notation
+(JSON) requests which is the format of the data supported by the Web Service.
+The developers can declare a HTTP request using whatever HTTP method is more
+suitable for their needs, i.e. GET, PUT, DELETE, POST.
+
+The Volley package also allows the developer to create a different Network Stack
+for each request making it possible to provide a version that deviates from the
+standard solution. This was crucial for the development of the Android
+application because of the use of the Hyper Text Transfer Protocol Secure
+(HTTPS) protocol, enabling the application to avoid any interception and
+manipulation of the data eing transmitted to and from the gateway's web service,
+developed in this project.
+
+It may also be noted that the headers for the authentication necessary for
+accessing the web service were also comprised within the Volley requests which
+made it posible for the Android application to support the HTTP Basic
+Authentication headers.
 
 \subsection{Flask}
 \label{chap3:sec:tools:sub:flask}
-\emph{Flask} is a micro-framework for the development of web applications. It
-was designed as an small yet extensible framework providing a solid core with
-basic services as:
+The Flask framework is a small framework use mostly for the development of web
+application. It's recent success is due to the fact that it is a very small
+framework only providing the developer with four core components as is, i.e.
+routing, debugging, a Web Server Gateway Interface (WSGI) amd Template Support.
+Despite the lack of more functionality, the framework makes up for it by
+supporting third-party extensions that allow for it's expansion in terms of
+functionalities.
+
+For this particular project that extensability was taken advantage of by using
+the Flask as the basis for the Web Service being developed for the interaction
+between the gateway and the user itself. The following list will consist of the
+three extensions to the Flask framework which were used in the context of this
+project:
 \begin{enumerate}
-	\item routing;
-	\item debugging;
-	\item Web Server Gateway Interface (WSGI);
-	\item Template Support.
+	\item \emph{flask-sqlalchemy} -- which provides an abstraction between the
+		SQL query language and the business logic.
+	\item \emph{flask-restful} -- is the extension that enables the declaration
+		of classes which will act as endpoints for each of the different Uniform
+		Resource Identifiers (URIs).
+	\item \emph{flask-httpauth} -- provides a seamless way to make all of the
+		request authentication necessary.
 \end{enumerate}
 
-The main objective with this framework is to avoid any features that might be
-unnecessary for any of the developers. In order to make up for this lack of
-functionality there is a support for extensions that can amplify these
-funcionalities as, for example, authentication, development of web services and
-database access. It is up to the developer to choose the extensions they might
-need or even implement their own ones.
-\emph{Flask} has two main dependencies, which can be divided into \emph{Jinja2} for
-template support and \emph{Werkzeug} for the rest of the services mentioned
-above.
-
-In the context of this software project the \emph{Flask} framework will be the
-foundation of the web service, which will run on the Raspberry Pi, alongside the
-email notification, database and firewall interface service. In order to develop
-the web service to interact with the Android application there was the
-integration of the following extensions:
-\begin{enumerate}
-	\item flask-sqlalchemy -- to work with the database and its data models.
-	\item flask-restful -- for the development of the API structure using the
-		REST principles.
-	\item flask-httpauth -- to enable the authentication of the users accessing
-		the Web API.
-\end{enumerate}
 
 % \subsection{SQLite}
 % \label{chap3:sec:tools:sub:sqlite}
