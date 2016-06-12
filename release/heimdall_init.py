@@ -60,9 +60,10 @@ def run():
     f = open('./heimdall.conf')
     config = json.loads(f.read())
 
-    print(config)
+    # print(config)
     firewall = Firewall(chain='FORWARD')
-    email = Email(config['mail_username'], config['mail_password'])
+    creds = json.loads(open('creds.json').read())
+    email = Email(creds['mail_username'], creds['mail_password'])
     p_firewall = Process(target=firewall.run, \
             args=(config['firewall_cycle'],))
     p_email = Process(target=email.run, args=(config['email_cycle'],))
