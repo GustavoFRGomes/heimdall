@@ -5,6 +5,8 @@ from models import create_session
 from models import Rule, IP, MAC
 from models import Counter
 
+from time_aux import diff_time
+
 class Firewall():
 
     def __init__(self, chain='INPUT'):
@@ -106,15 +108,20 @@ class Firewall():
         # add the id of the rule and the packets and bytes from the tuple
         # respectively!
         rules = self.getFromDB()
+        print(rules)
         # check for mismatch between counters and rules.
+        self.session.begin()
         for index in range(len(rules)):
             # print('REsultados')
             # print(results[index])
             pair = results[index]
+            print(pair)
             counter = Counter(rule_id=rules[index].id, timestamp=getTime(), \
                     packets=pair[0], byte=pair[1])
             # print(counter.rule_id, counter.timestamp, counter.packets)
             self.session.add(counter)
+
+        self.session.commit()
 
     def counterUpdate(self):
         results = []
