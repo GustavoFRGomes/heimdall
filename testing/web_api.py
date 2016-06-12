@@ -95,27 +95,8 @@ def postRule(port, action, protocol, ip=None, mac=None):
     # print(response.text)
     return response
 
-def man_addRule():
-    print('Port: ')
-    port = input()
-
-    print('Protocol:')
-    protocol = input()
-
-    print('Action:')
-    action = input()
-
-    print('IP:')
-    ip = input()
-    if not ip == '':
-        print('IPv4?')
-        ipv4 = input()
-
-    print('Mac:')
-    mac = input()
-
-def addIp(ip, ipv4):
-    return {'ip': ip, 'ipv4':ipv4}
+def addIp(ip, ipv4=True, src=True):
+    return {'ip': ip, 'ipv4':ipv4, 'src':src}
 
 def addMac(mac):
     return {'mac': mac}
@@ -123,3 +104,24 @@ def addMac(mac):
 def addUser(username, password):
     user = {'username':username, 'password':password}
     req.post(uri['user'], user)
+
+# def man_addRule():
+#     print('Port: ')
+#     port = input()
+
+#     print('Protocol:')
+#     protocol = input()
+
+#     print('Action:')
+#     action = input()
+
+#     print('IP:')
+#     ip = input()
+#     if not ip == '':
+#         print('IPv4?')
+#         ipv4 = input()
+
+#     print('Mac:')
+#     mac = input()
+
+
