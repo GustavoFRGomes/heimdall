@@ -70,9 +70,12 @@ class Email():
             return None
         min_diff = None
         current_time = getTime()
-        print(current_time)
+        # print(current_time)
         for user in users:
-            timestamp = user.timestmap
+            try:
+                timestamp = user.timestmap
+            except AttributeError:
+                timestamp = None
             if not timestamp == None:
                 new_diff = diff_time(user.timestamp, new_time=current_time)
                 if new_diff < min_diff:
@@ -89,10 +92,10 @@ class Email():
             self.queryDB()
             report = self.makeReport()
             # self.send(report)
-            print(report)
-            print(getTime())
+            # print(report)
+            # print(getTime())
             last_login_time = self.userTime()
-            print(last_login_time)
+            # print(last_login_time)
             if last_login_time == None or last_login_time > cycle:
                 time.sleep(cycle)
             else:
