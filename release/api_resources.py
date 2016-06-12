@@ -125,7 +125,8 @@ class RuleResource(Resource):
         args = request.get_json(force=True)
         print(args)
         print(json.loads(args))
-        args = json.loads(args)
+        if(type(args) == type("")):
+            args = json.loads(args)
         # print(args.keys())
         session.begin()
         setattr(rule, 'protocol', args['protocol'])
