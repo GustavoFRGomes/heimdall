@@ -36,6 +36,7 @@ rule_fields = {
 }
 
 counter_fields = {
+        'rule_id':fields.Integer,
         'id': fields.Integer,
         'packets': fields.Integer,
         'byte': fields.Integer,
@@ -45,9 +46,9 @@ counter_fields = {
 #         'rules': fields.List(fields.Nested(rule_fields)),
 # }
 
-counters_fields = {
-        'counters': fields.List,
-}
+# counters_fields = {
+#         'counters': fields.List,
+# }
 
 # Creating a common session for the Database.
 session = create_session()
@@ -144,17 +145,23 @@ class CounterResource(Resource):
 
     @marshal_with(counter_fields)
     def get(self, id):
-        counter = session.query(Counter).filter(Counter.id == id).first()
+        counter = session.query(Counter).filter(Counter.rule_id == id).all()
         if not counter:
             abort(404, message="Can't find {0} in the DB.".format(id))
-        return counter
+        if type(counter) == type([]):
+            return counter
+        return [counter]
 
 class CounterListResource(Resource):
     decorators = [auth.login_required]
-    @marshal_with(counters_fields)
+    @marshal_with(counter_fields)
     def get(self):
+        size_rules = len(session.query(Rule).all())
         counters = session.query(Counter).all()
-        return counters
+        results = counters[size_rules*-1]
+        if type(results) == type([]):
+            return results
+        return [results]
 
 class RuleListResource(Resource):
     decorators = [auth.login_required]
