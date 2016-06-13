@@ -5,24 +5,12 @@
 \section{Introduction}
 \label{chap4:sec:intro}
 % Cada capítulo \underline{intermédio} deve começar com uma breve introdução onde é explicado com um pouco mais de detalhe qual é o tema deste capítulo, e como é que se encontra organizado (i.e., o que é que cada secção seguinte discute).
-Within this chapter there will be a detailed description of the various
-subsystems of this project. The design was inspired by the Microservice
-architecture which is the new trend in architecture, especially in the
-development of web applications.
-This type of architecture design allows the division and modularization of
-complex systems by grouping all the functionality into various services which
-will then be called only when requested. This is good from a developer's
-perspective because it enables the division all the moving parts necessary to
-make the system run as expected and it also allows the individual development of
-these subsystems that can run independently from all the other systems.
-
-% older version of the intro below
-This chapter will describe the four subsystem that were developed and that
-compose the entire project. As said previously the entire system consists of
-four subsystems that interact with one another using the database, the intention
-is to make the system behave asynchronously and this will help in the
-development or upgrade of any of the components since they are not linked they
-can be exchanged for others which could have better performance or efficiency.
+This project contains a detailed description of each of the subsystem running on
+the Raspberry Pi as well as the mobile application. As mentioned in the previous
+chapter the system which will run on the Raspberry Pi is inspired by the concept
+of Microservices meaning that each service provided by the gateway system is
+independent from all of the other services, which means a detailed approach to
+each service is necessary.
 
 \section{Web Service Subsystem}
 \label{chap4:sec:web-sys}
@@ -30,26 +18,28 @@ can be exchanged for others which could have better performance or efficiency.
 The Web Service is be responsible for all the communication between the user and
 the Raspberry Pi components. The web service will be all implemented making use
 of the \emph{Flask} framework allied with the \emph{flask-restful} extension
-that enables the declaration of resources to be accessed through the Hyper Text
-Transfer Protocol (HTTP) requests.
+that enables the declaration of resources to be accessed through
+\emph{\ac{HTTP}} requests.
 
 In order to implement each resource we only need to create a class to represent
-each Uniform Resource Identifier (URI). These resources will need the methods
-for GET, POST, PUT and DELETE requests and these can be declared as method names
-
-These functionalities are as follows:
+each \emhp{\ac{URI}}. These resources will handle the \emph{\ac{HTTP}} methods,
+such as GET, POST, PUT and DELETE, according to their implementation providing
+the following functionalities through the \emph{\ac{API}}:
 \begin{enumerate}
-	\item Check for notifications on the server.
-	\item List the ruleset of the server
-	\item Add rules to the ruleset
-	\item Remove rules from the ruleset
-	\item Get reports with counters
+	\item List the ruleset of the server;
+	\item Add rules to the ruleset;
+	\item Remove rules from the ruleset;
+	\item Edit rules in the ruleset;
+	\item Get the latest counter values for the entire ruleset;
+	\item Get all of the values for a given rule.
 \end{enumerate}
 
-As said in the previous chapter the Web Service will be integrated within the
-Raspberry Pi and it will make use of the Flask framework. The Web Service was
-developed using the REST architecture as the foundation and respecting the six
-principles which qualify it as so:
+This Web Service implements a \emph{\ac{REST}} interface for the interaction
+with external devices. The use of the \emph{\ac{REST}} \emph{\ac{API}} makes
+interfacing with other devices more standard, opening the possibility to
+implement other applications that access this \emph{\ac{API}}.
+We now present the principles which need to be followed by the Web Service in
+order to be considered a \emph{\ac{REST}} compliant web service:
 \begin{enumerate}
 	\item Client-Server architecture with a clear separation between the two.
 	\item Stateless -- every request from the client must contain all the
@@ -70,26 +60,16 @@ principles which qualify it as so:
 \end{enumerate}
 (These principles were first described in Roy Fielding's Ph.D. dissertation.)
 
-The API can be accessed using the HTTP protocol and the following types of
-headers that already come with the protocol specification:
-\begin{enumerate}
-	\item GET
-	\item POST
-	\item DELETE
-	\item PUT
-	% \item AUTHENTICATE (check for the official name for the auth header)
-\end{enumerate}
+The Web Service will parse and respond with data in the \emph{\ac{JSON}} format
+providing abstraction from the language being used for the client application.
 
-The web service will communicate using JSON for data structuring enabling the
-independence of programming language for the web service and the applications
-that will interact with the user and the web service itself.
-
-The API for this RESTful web service is as follows:
+The \emph{\ac{API}} for this RESTful web service can be accessed by appending
+the following \emph{\ac{URI}} to the gateway's \emph{\ac{IP}} address:
 \begin{enumerate}
 	\item "rule/<int:id>" -- making it available for the client to check for a
 		specific rule, as well as delete or edit it, using the GET, DELETE and
-		PUT requests, respectively, from the HTTP protocol.
-	\item "/rules" -- this URI will enable the client application to request for
+		PUT requests, respectively, from the \emph{\ac{HTTP}} protocol.
+	\item "/rules" -- this \emph{\ac{URI}} will enable the client application to request for
 		the full set of rules currently running on the server, by using the GET
 		request. By making a request with the POST type the client application
 		can append new rules to the rule set already in place, which will then
@@ -98,12 +78,53 @@ The API for this RESTful web service is as follows:
 		request and provided with the id of the rule it will deliver the
 		counters value, with number of packets and total number of bytes that
 		were matched with that rule.
-	\item "/counters" -- also only accessible through GET requests and sends the
-		list of every counter for every rule in place, with their respective
-		packets and number of bytes.
+	\item "/counters" -- also only accessible through GET requests, which sends
+		a list of the latest counters collected from the firewall service. These
+		will be a list of rules identified by their ID, as well as the number of
+		packets and bytes for that corresponding rule.
 \end{enumerate}
 
 % TALK ABOUT THE FIELDS OF THE flask-restful
+In order to send all of the responses in a standard \emph{\ac{JSON}} format the
+\emph{flask-restful} extension provides a formatter to convert the objects into
+the \emph{\ac{JSON}} format intended. This is demonstrated in the following code
+listing:
+
+\begin{lstlisting}[caption=Example of the email JSON template.]
+ip_fields = {
+        'ip': fields.String,
+        'ipv4': fields.Boolean,
+        'src': fields.Boolean,
+}
+
+mac_fields = {
+        'mac': fields.String,
+}
+
+rule_fields = {
+        'id': fields.Integer,
+        'port': fields.String,
+        'protocol': fields.String,
+        'action': fields.String,
+        'ip': fields.Nested(ip_fields),
+        'mac': fields.Nested(mac_fields),
+}
+\end{lstlisting}
+
+This is then used by the \emph{marshal\_with} Python decorator in order to
+convert the data object from the database into \emph{\ac{JSON}} format.
+
+\begin{lstlisting}[caption=Example of the use of marshal\_with decorator.]
+class RuleResource(Resource):
+	# ...
+	@marshal_with(rule_fields)
+	def get(self, id):
+		rule = session.query(Rule).filter(Rule.id == id).first()
+		if not rule:
+			abort(404, message="Can't find {0} in the DB.".format(id))
+		return rule
+	# ...
+\end{lstlisting}
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
@@ -210,7 +231,7 @@ to the information that the user gave during initial configuration.
         "goodbye": "Thank you for your attention,",
         "subject": "Notification From Heimdall Secure Gateway",
         "reason": "Testing this email thingie",
-        "email\_to": "gustaafewf",
+        "email\_to": "gustavofrgomes@hotmail.com",
         "greeting": "Hello there Mr/Mrs"
     }
 }
