@@ -89,7 +89,7 @@ This architecture design also enables the interchangeability of the server-side
 components actually making it possible to implement alternatives for each of the
 components and making them run without comprimising any of the other subsystem,
 which makes it possible for the user or another developer to swap, for example,
-the Email Notification with a Short Messaging Service (SMS) notification system
+the Email Notification with a \emph{\ac{SMS}} notification system
 or the Firewall Interface with a new system that he or she implemented.
 
 These distinct subsystems will be described in the next chapter, alongside the
@@ -101,14 +101,14 @@ description of the Android application.
 \section{Tools}
 \label{chap3:sec:tools}
 In order to make the entire system feasable in the proposed timeframe there was
-the need to use already available tools both in the Linux Operating System and
-also on the Android
+the need to use already available tools both in the GNU/Linux Operating System
+and also on the Android mobile \emph{\ac{OS}}.
 
 \subsection{Volley}
 \label{chap3:sec:tools:sub:volley}
 Volley is a Java package devoloped by a team at Google Inc. with the intention
 of creating asynchronous requests for network resources. It is focused on making
-the efforts for Hyper Text Transfer Protocol (HTTP) requests much more feasable
+the efforts for \emph{\ac{HTTP}} requests much more feasable
 within the Android Operation System. Since Android recommends that developers
 avoid overloading the main thread of execution this packageprovides a simple
 interface that enables the developers to simply declare a RequestQueue, which is
@@ -122,28 +122,27 @@ Raspberry Pi.
 
 The Volley package also provides a easy way to handle JavaScrip Object Notation
 (JSON) requests which is the format of the data supported by the Web Service.
-The developers can declare a HTTP request using whatever HTTP method is more
-suitable for their needs, i.e. GET, PUT, DELETE, POST.
+The developers can declare a \emhp{\ac{HTTP}} request using whichever
+\emhp{\ac{HTTP}} method is more suitables, i.e. GET, PUT, DELETE, POST.
 
 The Volley package also allows the developer to create a different Network Stack
 for each request making it possible to provide a version that deviates from the
 standard solution. This was crucial for the development of the Android
-application because of the use of the Hyper Text Transfer Protocol Secure
-(HTTPS) protocol, enabling the application to avoid any interception and
-manipulation of the data eing transmitted to and from the gateway's web service,
-developed in this project.
+application because of the use of the \emph{\ac{HTTPS}} protocol, enabling the
+application to avoid any interception and manipulation of the data eing
+transmitted to and from the gateway's web service, developed in this project.
 
 It may also be noted that the headers for the authentication necessary for
 accessing the web service were also comprised within the Volley requests which
-made it posible for the Android application to support the HTTP Basic
-Authentication headers.
+made it posible for the Android application to support the \emph{\ac{HTTP}}
+Basic Authentication headers.
 
 \subsection{Flask}
 \label{chap3:sec:tools:sub:flask}
 The Flask framework is a small framework use mostly for the development of web
 application. It's recent success is due to the fact that it is a very small
 framework only providing the developer with four core components as is, i.e.
-routing, debugging, a Web Server Gateway Interface (WSGI) amd Template Support.
+routing, debugging, a \emph{\ac{WSGI}} and Template Support.
 Despite the lack of more functionality, the framework makes up for it by
 supporting third-party extensions that allow for it's expansion in terms of
 functionalities.
@@ -194,9 +193,9 @@ some of the most common database systems as, for example:
 	\item Oracle
 \end{enumerate}
 By using this library a developer could abstract the code from the underlying
-database and its SQL peculiarities. It also helps with the sanitization of the
-data which is inputed to the database preventing common security flaws like SQL
-injection attacks.
+database and its \emph{\ac{SQL}} peculiarities. It also helps with the
+sanitization of the data which is inputed to the database preventing common
+security flaws like \emph{\ac{SQL}} injection attacks.
 
 SQLAlchemy also provides flexibility by having two alternative modes of usage,
 which could be used interchangeably depending on the personnal preferences of
@@ -207,10 +206,11 @@ the developer, these two distinct ways are:
 		abstraction from typical SQL language. This is also the foundation of
 		the next usage mode.
 		% ORM - Object Relational Mapper
-	\item ORM -- has a more high-level abstraction and leveraging a declarative
-		system that enables the developer to work in a more idiomatic way. This
-		is accomplished by binding the database schema with data models
-		represented as Python classes.
+	\item ORM -- which stands for Object Relational Mapper, has a more
+		high-level abstraction and leveraging a declarative system that enables
+		the developer to work in a more idiomatic way. This is accomplished by
+		binding the database schema with data models represented as Python
+		classes.
 \end{enumerate}
 
 This project makes extensive use of the SQLAlchemy's ORM mode with a SQLite3
@@ -279,7 +279,7 @@ FILTER and FORWARD, respectively.
 In this chapter we have talked about the underlying architecture of the system
 as well as the tools that were used in the various components of the project.
 We refer the Volley used by the mobile application to request resources from the
-Flask web service running a REST API. We also talked about the databate
+Flask web service running the \emph{\ac{API}}. We also talked about the databate
 management system as well as the SQLAlchemy Python module. We ended this chapter
 by talking about the iptables firewall system present in GNU/Linux which will be
 used as the firewall on the Raspberry Pi gateway.
