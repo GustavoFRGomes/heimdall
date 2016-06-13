@@ -128,24 +128,24 @@ class RuleResource(Resource):
 
 \section{Database Subsystem}
 \label{chap4:sec:db-sys}
-The database can be considered the center of the entire system since it will be
-where all of the data stored to represent the firewall rules as well as the
-packets which were flagged by the user. It will also contain pairs of username
-and password representation for the user authentication even though this only
-having one user registered might be enough for this type of system.
-The database management system is SQLite 3 which as already a good API provided
-in the Python standard libraries, nonetheless this project will make use of a
-package called SQLAlchemy that can is freely available online which abstracts
-the developer from the SQL queries.
 
-The SQLAlchemy module enables the programmer to represt all of the entities as
-well as the relationships between them using Python classes that inherit from
-the Model superclass provided by SQLAlchemy. This way the developer only need to
-declare the name of the attributes as well as the table name by declaring them
-as attributes of the classes.
+The Database is the center of the gateway system, where all of the data is
+concentrated.
+It is a \emph{SQLite} database mostly handled by the \emph{SQLAlchemy}, already
+described in the Tools section. this subsystem doesn't have an executable
+content, because it consists in the entity declaration for the data models
+needed for this projet as well as two functions for the creation of the database
+as well as sessions to it. All of this is concentrated in the \emph{models.py}
+file within the root directory of the project.
 
-The models that need to be implemented in order for the whole system to work as
-intended are as follows:
+The following image represents the database schema that was needed for the
+system, including the relationships between entities:
+
+% put the schema of the DB
+
+As said previously the system makes use of the \emph{SQLAlchemy} module in order
+abstract the programmer from creating the necessary \emph{\ac{SQL}} queries. The
+entities of the database are introduced in the next list:
 \begin{enumerate}
 	\item User -- representing the user's credentials, username and password
 		fields.
@@ -155,74 +155,67 @@ intended are as follows:
 		the notifications.
 \end{enumerate}
 
-These are all entities in the database and will conveil all of the data for the
-application and the rest of the subsystems will all needs to routinely interact
-with the database in order to get the rules for the firewall, to authenticate
-users or even to get the information for the email and app notifications.
-
+These entities only need to be declared using plain Python objects as it can be
+seen in the following code snippet:
 % insert and explain at least one of the models
+\begin{lstlisting}[caption=Example of the User entity declaration.]
+class User(Base):
+    __tablename__ = 'users'
 
-After modelling the data we only need to create a session for the database, and
-all of the data inside the database will be accessible with the call of methods
-from the session instance. These methods could be insert, delete, update and
-query.
+    id = Column(Integer, primary_key=True)
+    username = Column(String(255), unique=True)
+    password = Column(String(512))
+    timestamp = Column(String(100))
 
-% insert and explian at least one query and one insertion
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
 
-% The database is the central component of our system and it is the most
-% important system, because without it nothing else can run.
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
-The database is organized with the following schema:
+    def __repr__(self):
+        return '<User {0}>'.format(self.username)
+\end{lstlisting}
 
-%insert an image of the database's schema here
+This was a small example of the declaration of the User entity for this project.
+These objects will then be converted into \emph{\ac{SQL}} queries by the
+\emph{SQLAlchemy} module, declaring the schema with teh appropriate data types
+from the database being used. This type of conversion is importante when
+treating relationships between entities as well as the use of types of data that
+might need to be converted depending on the database system chosen by the
+developer, for example the Boolean data type which is not present in most
+database systems such as \emph{SQLite}
 
-% Describe each entity within the database.
+In order to access this data the developer should declare a session to the
+database in order to handle all of the data. The next code snippet has the
+session creator function, also present in the \emph{models.py} file:
+\begin{lstlisting}[caption=Example of session creator function.]
+def create_session(uri='sqlite:///./heimdall.sqlite3'):
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import scoped_session
+    from sqlalchemy.orm import sessionmaker
+    Session = sessionmaker(autocommit=True, autoflush=False, \
+                           bind=create_engine(uri))
+    return scoped_session(Session)
+\end{lstlisting}
 
 \section{Email Notification Subsystem}
 \label{chap4:sec:email-sys}
 The Email Notification Subsystem will act as a complement for the Android
-application, which means that it will only send out notifications to the user if
-he isn't home. In order to detect the user, the Email Service queries the
-database to check when was the last time the user was making requests to the Web
-Service API, then calculates the time elapsed and if it's greater or equal to
-the cycle period it will send an email with a small report about the network
-traffic made inside the local network. It will then simply sleep until the next
-cycle repeating the process. This cycle time will be defined by the user when he
-initially configures the system in the Raspberry Pi.
+application, this means that it will only send out notifications to the user if
+he isn't home. In order to detect the user's presence, the Email Service make
+use of the timstamp registration of each user in the database checking when was
+the last time the user made requests to the web service. Afterwards it
+calculates when how much time it passed and checks if it is greater then or
+equal to the cycle period also specified by the user. If it is so, it will send
+out a report of the activity on the network, and repeats all the sequence again.
 
-The user will need to define the email address where he wants to receive the
-notifications as well as the cycle periods, i.e., the time that needs to pass
-between notifications sent to the users email, lastly the user will also be
-asked to provide his first name in order for the system to address the user
-properly.
-
-The email being sent to the user is built using a template that is formatted
-according to JSON standards which makes it highly customizable if the user
-actually wants to modify some of the fields. The following code listing
-demonstrates a typical template, the default template provided within the
-installation files. During configuration, especially if the user uses the easy
-configuration scrip some of these fields will suffer changes, both the
-users\_email and the users\_name will be changed accordingly in this template
-file after configuration.
-
-The email service will also be in charge of creating the small reports that go
-in the reason field, which is the body of the email per se. This is all done
-automatically by the \emph{mixRuleCounters(. ,.)} which takes as parameters the
-rules and counters received from the database. The method will then iterate
-through all of the rules which have \emph{NOTIFY} or \emph{NOTIFY\_BLOCK} as
-actions and link them with the counters for those rules.
-
-Since the system needs to be clear for the user, all of the rules are explicitly
-converted into a more user friendly format and then they will be united with the
-values for the counters at a specific time.
-
-% put a small template of the email as a code listing.
-
-The emails being sent will all have the same design which is defined in the a
-JSON formatted file named, \emph{email.json}. The Email Service will compose the
-email for the user based on this template changing the various fields according
-to the information that the user gave during initial configuration.
-
+It is up to the user to define the email cycle as well as to provide the email
+address he or she wants to receive the reports and also the user's name. These
+emails are all composed based on a \emph{\ac{JSON}} template located in the
+\emph{email.json} file. The next code listing is an example of the template for
+the email generation, the dynamic reports will be inserted in place of the
+\emph{reason} value below:
 \begin{lstlisting}[caption=Example of the email JSON template.]
 {
     "email": {
@@ -230,12 +223,24 @@ to the information that the user gave during initial configuration.
         "sign": "Sent From Heimdall Secure Gateway.",
         "goodbye": "Thank you for your attention,",
         "subject": "Notification From Heimdall Secure Gateway",
-        "reason": "Testing this email thingie",
+        "reason": "Nothing to report!",
         "email\_to": "gustavofrgomes@hotmail.com",
         "greeting": "Hello there Mr/Mrs"
     }
 }
 \end{lstlisting}
+
+The email service will also be in charge of creating the small reports that go
+in the reason field, which is the body of the email per se. This is all done
+automatically by the \emph{mixRuleCounters(. ,.)} which takes as parameters the
+rules and counters received from the database. The method will then iterate
+through all of the rules which have \emph{NOTIFY} or \emph{NOTIFY\_BLOCK} as
+actions and link them with the counters for those same rules.
+
+The following image is an example of the email service whenever there is not
+activity in the database:
+
+% insert image of the email example
 
 A problem found with this feature was that the email system globally has become
 much more secure and it is impossible to send an email without an Email Provider
@@ -250,29 +255,8 @@ user's specified account from that account created for the system.
 By making use of the \emph{email} module provided within Python's Standard
 Library, it is possible to connect to an account on a SMTP server in order to
 send any email, after the input of user's credentials such as the email address
-and the password of that account.
-
-% last thing!!!
-% The Email Notification service will be keep notifying the user whenever he isn't
-% at home, this is a measure of securing the local network, but it would also need
-% a server to which both the gateway device and a possible mobile application
-% would need to connect in order to make communication possible.
-
-% Through email it will be easier for the device to simply send messages of what
-% is happening with the devices inside their domestic network. If there are any
-% flagged communitcations are performed then this subsystem will inform within
-% regular, user defined, intervals of time, e.g. every two hours send a report if
-% any activity, signalled by the user as note-worthy, has occured.
-
-% As referred before this will be a complement for the Android notifications
-% because this will only occur whenever the user is not home, this is all done by
-% logging when the last request to the web service preventing that both the email
-% and Android notifications to overlap.
-
-% Using the \emph{email} module present in the Python standard library it was
-% possible to connect to an SMTP server like Googles gmail and after providing
-% access credentials, username and password, the system can now send emails for a
-% specified email address.
+and the password of that account. These credentials should be in a
+\emph{\ac{JSON} format on the file named \emph{creds.json}.
 
 \section{Firewall Interface Subsystem}
 \label{chap4:sec:firewall-sys}
