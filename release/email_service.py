@@ -33,14 +33,12 @@ class Email():
         self.rules = self.session.query(Rule).all()
         for rule in self.rules:
             counter = self.session.query(Counter).filter( \
-                    Counter.rule_id == rule.id)
-            self.counters[rule.id] = counter
+                    Counter.rule_id == rule.id).all()
+            self.counters[rule.id] = counter[-1]
 
     def mixRuleCounters(self, rule, counter):
-        # check for IPs and MACs also!!!
         report = 'Rule no. {0}: {1}@{2}'.format(rule.id, rule.protocol, \
                 rule.port)
-        # can add here the IP or MAC if they exist != None
         action = ' with action [{0}]'.format(rule.action)
         if rule.ip:
             action = ' at {0}'.format(rule.ip.ip)
@@ -91,7 +89,7 @@ class Email():
         while True:
             self.queryDB()
             report = self.makeReport()
-            # self.send(report)
+            self.send(report)
             # print(report)
             # print(getTime())
             last_login_time = self.userTime()
