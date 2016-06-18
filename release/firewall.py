@@ -9,7 +9,7 @@ from time_aux import diff_time
 
 class Firewall():
 
-    def __init__(self, chain='INPUT'):
+    def __init__(self, chain='FORWARD'):
         self.session = create_session()
         self.table = iptc.Table(iptc.Table.FILTER)
         self.chain = iptc.Chain(self.table, chain)
@@ -36,8 +36,10 @@ class Firewall():
         from the Database because of the result.
         """
         self.chain.zero_counters()
+        self.session.begin()
         counters = self.session.query(Counter).all()
         self.session.query(Counter).delete()
+        self.session.commit()
 
     def addIp(self, rule, ip):
         """
@@ -67,28 +69,32 @@ class Firewall():
             self.resetCounters() # reset all the counters
             self.table.autocommit = False
             for rule in self.rules:
-                r = self.addRule(rule)
-                self.submitRule(r)
+                valid, r = self.addRule(rule)
+                if (valid):
+                    self.submitRule(r)
             self.table.commit()
             self.table.autocommit = True
             self.table.refresh()
 
     def addRule(self, db_rule):
         rule = iptc.Rule()
-        rule.protocol = db_rule.protocol
-        match = rule.create_match(db_rule.protocol)
-        match.dport = str(db_rule.port)
-        if db_rule.ip:
-            rule.src = db_rule.ip.ip
-        if db_rule.mac:
-            mac_match = rule.create_match('mac')
-            mac_match.mac_source = db_rule.mac.mac
-        if db_rule.action in ['ACCEPT', 'NOTIFY']:
-            rule.target = iptc.Target(rule, 'ACCEPT')
-        if db_rule.action in ['BLOCK', 'BLOCK_NOTIFY']:
-            rule.target = iptc.Target(rule, 'DROP')
-
-        return rule
+        try:
+            rule.protocol = db_rule.protocol
+            match = rule.create_match(db_rule.protocol)
+            match.dport = str(db_rule.port)
+            if db_rule.ip:
+                rule.src = db_rule.ip.ip
+            if db_rule.mac:
+                mac_match = rule.create_match('mac')
+                mac_match.mac_source = db_rule.mac.mac
+            if db_rule.action in ['ACCEPT', 'NOTIFY']:
+                rule.target = iptc.Target(rule, 'ACCEPT')
+            if db_rule.action in ['BLOCK', 'BLOCK_NOTIFY']:
+                print(db_rule.action)
+                rule.target = iptc.Target(rule, 'DROP')
+        except iptc.xtables.XTablesError:
+            return False, None
+        return True, rule
 
     def createRule(self, rule_dic):
         rule = iptc.Rule()
@@ -108,7 +114,7 @@ class Firewall():
         # add the id of the rule and the packets and bytes from the tuple
         # respectively!
         rules = self.getFromDB()
-        print(rules)
+        # print(rules)
         # check for mismatch between counters and rules.
         self.session.begin()
         for index in range(len(rules)):

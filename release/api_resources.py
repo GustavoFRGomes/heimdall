@@ -124,7 +124,7 @@ class RuleResource(Resource):
         # args = self.reqparser.parse_args()
         args = request.get_json(force=True)
         print(args)
-        print(json.loads(args))
+        # print(json.loads(args))
         if(type(args) == type("")):
             args = json.loads(args)
         # print(args.keys())
@@ -175,7 +175,7 @@ class CounterListResource(Resource):
     def get(self):
         size_rules = len(session.query(Rule).all())
         counters = session.query(Counter).all()
-        results = counters[size_rules*-1]
+        results = counters[(size_rules*(-1)):]
         if type(results) == type([]):
             return results
         return [results]
