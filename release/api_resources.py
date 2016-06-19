@@ -4,12 +4,12 @@ from models import Counter
 from models import create_session
 
 from flask import request
-from flask.ext.httpauth import HTTPBasicAuth as httpauth
-from flask.ext.restful import reqparse
-from flask.ext.restful import abort
-from flask.ext.restful import fields
-from flask.ext.restful import marshal_with
-from flask.ext.restful import Resource
+from flask_httpauth import HTTPBasicAuth as httpauth
+from flask_restful import reqparse
+from flask_restful import abort
+from flask_restful import fields
+from flask_restful import marshal_with
+from flask_restful import Resource
 
 from validate import validIpv4, validMac
 
