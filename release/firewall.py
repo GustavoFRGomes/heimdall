@@ -65,9 +65,9 @@ class Firewall():
         rules = self.getFromDB()
         if not self.rules == rules:
             self.rules = rules
+            self.table.autocommit = False
             self.flushRules()
             self.resetCounters() # reset all the counters
-            self.table.autocommit = False
             for rule in self.rules:
                 valid, r = self.addRule(rule)
                 if (valid):
