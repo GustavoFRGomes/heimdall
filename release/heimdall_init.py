@@ -5,6 +5,7 @@ import json
 from firewall import Firewall
 from email_service import Email
 from api import app
+form models import create_db
 
 import os
 from multiprocessing import Process
@@ -55,6 +56,8 @@ def prompt_user():
         json.dump(config_data, f, indent=4)
 
 def run():
+    if not (os.path.isfile('./heimdall.sqlite3')):
+        create_db()
     if not (os.path.isfile('./heimdall.conf')):
         prompt_user()
     f = open('./heimdall.conf')
