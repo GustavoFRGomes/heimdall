@@ -128,7 +128,6 @@ class RuleResource(Resource):
         if(type(args) == type("")):
             args = json.loads(args)
         # print(args.keys())
-        session.begin()
         setattr(rule, 'protocol', args['protocol'])
         setattr(rule, 'port', args['port'])
         setattr(rule, 'action', args['action'])
@@ -137,8 +136,12 @@ class RuleResource(Resource):
         mac = args.get('mac', None)
         # Check if ip and mac is passed and created by these things.
         if ip:
+            if not validIpv4(ip['ip']):
+                abort(401, message='Invalid IPv4 address!')
             setattr(rule, 'ip', IP(ip=ip['ip'], ipv4=ip['ipv4'], src=ip['src']))
         if mac:
+            if not validMac(mac['mac']):
+                abort(401, message='Invalid MAC address!')
             setattr(rule, 'mac', MAC(mac=mac['mac']))
             # rule.mac = MAC(mac=mac['mac'])
         # session.add(rule)
